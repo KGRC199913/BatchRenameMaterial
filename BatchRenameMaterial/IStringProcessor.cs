@@ -6,8 +6,23 @@ using System.Threading.Tasks;
 
 namespace BatchRenameMaterial
 {
+    /// <summary>
+    /// a Processor to modified a string.
+    /// </summary>
     interface IStringProcessor
     {
+        /// <summary>
+        ///     Commit the change.
+        /// </summary>
+        /// <param name="haystack">
+        ///     A string to be modified
+        /// </param>
+        /// <param name="arg">
+        ///     A arg for modifing the string.
+        /// </param>
+        /// <returns>
+        ///     result string.
+        /// </returns>
         string Process(string haystack, object arg);
     }
 }

@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace BatchRenameMaterial
 {
+    /// <summary>
+    ///     Argument for Non-regex @<see cref="StringRemover"/>.
+    /// </summary>
     class StringRemoveArg
     {
-        private int _startIndex;
-        private int _charNumToDel;
-
+        /// <summary>
+        ///     Begin postion of the deletion.
+        /// </summary>
         public int StartIndex { get; set; }
+        /// <summary>
+        ///     Number of character to be deleted.
+        /// </summary>
         public int CharNumToDel { get; set; }
     }
 }

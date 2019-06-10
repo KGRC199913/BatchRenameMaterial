@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace BatchRenameMaterial
 {
+    /// <summary>
+    /// Argrument for @<see cref="StringReplacer"/>.
+    /// </summary>
     class StringReplaceArg
     {
-        private string _replaceTarget;
-        private string _replacePattern;
-
+        /// <summary>
+        ///     String will be change to this.
+        /// </summary>
         public string ReplaceTarget { get; set; }
+        /// <summary>
+        ///     A Regex to match needles in the haystack.
+        /// </summary>
         public string ReplacePattern { get; set; }
     }
 }

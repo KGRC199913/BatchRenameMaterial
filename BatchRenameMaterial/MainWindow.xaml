@@ -4,9 +4,110 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatchRenameMaterial"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        x:Name="FrontWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="600" Width="1000" MinHeight="600" MinWidth="850">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top"
+              BorderBrush="Black"
+              BorderThickness="1">
+            <Label Content="Place Holder"/>
+        </Menu>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Column="0" 
+                    Grid.ColumnSpan="2" 
+                    BorderThickness="1" 
+                    BorderBrush="Black">
+                <StackPanel>
+                    <Menu>
+                        <Button Name="startRenameButton" Width="50">
+                            <materialDesign:PackIcon Kind="Play" Foreground="Teal"/>
+                        </Button>
+                        <Button Name="addRuleButton" Width="50">
+                            <materialDesign:PackIcon Kind="Add" Foreground="Teal"/>
+                        </Button>
+                        <Button Name="saveRulesButton" Width="50">
+                            <materialDesign:PackIcon Kind="ContentSave" Foreground="Teal"/>
+                        </Button>
+                        <Button Name="loadRulesButton" Width="50">
+                            <materialDesign:PackIcon Kind="FolderOpen" Foreground="Teal"/>
+                        </Button>
+                    </Menu>
+                    <Separator BorderBrush="Black"/>
+                    <Menu>
+                        <Button Name="ruleUpButton" Width="50">
+                            <materialDesign:PackIcon Kind="ArrowDropUp" Foreground="Teal"/>
+                        </Button>
+                        <Button Name="ruleDownButton" Width="50">
+                            <materialDesign:PackIcon Kind="ArrowDropDown" Foreground="Teal"/>
+                        </Button>
+                        <Button Name="ruleUpMostButton" Width="50">
+                            <materialDesign:PackIcon Kind="ArrowUpward" Foreground="Teal"/>
+                        </Button>
+                        <Button Name="ruleDownMostButton" Width="50">
+                            <materialDesign:PackIcon Kind="ArrowDownward" Foreground="Teal"/>
+                        </Button>
+                    </Menu>
+                    <Separator BorderBrush="Black"/>
+                    <ListView Name="rulesListView"
+                              ItemsSource="{Binding}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" 
+                    Grid.ColumnSpan="3" 
+                    BorderThickness="1"
+                    BorderBrush="Black">
+                <StackPanel>
+                    <Menu>
+                        <Button Name="addFileButton" Width="50">
+                            <materialDesign:PackIcon Kind="NoteAdd" Foreground="Teal"/>
+                        </Button>
+                    </Menu>
+                    <Separator BorderBrush="Black"/>
+                    <DataGrid Name="filesDataGrid" 
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              Margin="0, 4, 0, 0">
+                        <DataGrid.Columns>
+                            <materialDesign:MaterialDataGridTextColumn Header="File Name" Width="2*"
+                                                                       Binding="{Binding Name}"/>
+                            <materialDesign:MaterialDataGridTextColumn Header="New Name" Width="2*"
+                                                                       Binding="{Binding NewName}"/>
+                            <materialDesign:MaterialDataGridTextColumn Header="Path" Width="3*"
+                                                                       Binding="{Binding Path}"/>
+                            <materialDesign:MaterialDataGridTextColumn Header="Error" Width="*"
+                                                                       Binding="{Binding Error}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
 </Window>

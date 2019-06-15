@@ -17,12 +17,9 @@ namespace BatchRenameMaterial
         /// <param name="haystack">
         ///     A string to be modified
         /// </param>
-        /// <param name="arg">
-        ///     A arg for modifing the string.
-        /// </param>
         /// <returns>
         ///     result string.
         /// </returns>
-        string Process(string haystack, object arg);
+        string Process(string haystack);
     }
 }

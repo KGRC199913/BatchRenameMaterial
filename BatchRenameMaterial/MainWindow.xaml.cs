@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,15 @@ namespace BatchRenameMaterial
     /// </summary>
     public partial class MainWindow : Window
     {
+        ObservableCollection<File> files = new ObservableCollection<File>();
+        BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
+
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
+            this.filesDataGrid.DataContext = files;
+            this.rulesListView.DataContext = processors;
         }
     }
 }

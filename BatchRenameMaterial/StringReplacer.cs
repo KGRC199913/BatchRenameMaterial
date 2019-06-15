@@ -12,21 +12,20 @@ namespace BatchRenameMaterial
     /// </summary>
     class StringReplacer : IStringProcessor
     {
+        private StringReplaceArg replaceRule;
+
+        public StringReplaceArg Arg { get => replaceRule; set => replaceRule = value; }
         /// <summary>
         ///     Replace tokens match with regex.
         /// </summary>
         /// <param name="haystack">
         ///     String to be modified
         /// </param>
-        /// <param name="arg">
-        ///     @<see cref="StringReplaceArg"/>
-        /// </param>
         /// <returns>
         ///     A modified string if arg is valid. The same string if invalid arg.
         /// </returns>
-        public string Process(string haystack, object arg)
+        public string Process(string haystack)
         {
-            var replaceRule = arg as StringReplaceArg;
             if (replaceRule == null)
                 return haystack;
             var result = Regex.Replace(haystack, replaceRule.ReplacePattern, replaceRule.ReplaceTarget);

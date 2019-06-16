@@ -62,10 +62,10 @@
                         <Button Name="addRuleButton" Width="50">
                             <materialDesign:PackIcon Kind="Add" Foreground="Teal"/>
                         </Button>
-                        <Button Name="saveRulesButton" Width="50">
+                        <Button Name="saveRulesButton" Width="50" Click="SaveRulesButton_Click">
                             <materialDesign:PackIcon Kind="ContentSave" Foreground="Teal"/>
                         </Button>
-                        <Button Name="loadRulesButton" Width="50">
+                        <Button Name="loadRulesButton" Width="50" Click="LoadRulesButton_Click">
                             <materialDesign:PackIcon Kind="FolderOpen" Foreground="Teal"/>
                         </Button>
                     </Menu>

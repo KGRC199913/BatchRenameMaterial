@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -33,6 +36,7 @@ namespace BatchRenameMaterial
             this.rulesListView.DataContext = processors;
 
             // TEST AREA
+            //TO BE DELETE
             files.Add(
                 new File()
                 {
@@ -60,6 +64,7 @@ namespace BatchRenameMaterial
 
         private void UpdateNewName()
         {
+            // Parallel process the file name to new name
             Parallel.ForEach(files, file =>
             {
                 file.NewName = file.Name;
@@ -73,6 +78,61 @@ namespace BatchRenameMaterial
         private void StartRenameButton_Click(object sender, RoutedEventArgs e)
         {
             UpdateNewName();
+            // TODO: Add file rename
+        }
+
+        private void SaveRulesButton_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: create a dialog to get name/location
+            //TODO: get preset name/location from user (save to saveLoc)
+            string saveLoc = "./test.preset";
+            // Serialize processors
+            IFormatter formatter = new BinaryFormatter();
+            Stream fstream = null;
+            try
+            {
+                fstream = new FileStream(saveLoc, FileMode.CreateNew, FileAccess.Write);
+            }
+            catch (IOException ex)
+            {
+                // Preset is already exist
+                //TODO: ask user to re-enter new preset name/location
+            }
+
+            if (fstream != null)
+                formatter.Serialize(fstream, processors);
+            else
+            {
+                //TODO: announce saving preset failure to user
+            }
+        }
+
+        private void LoadRulesButton_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: create a dialog to get name/location
+            //TODO: get preset name/location from user (save to loadLoc)
+            string loadLoc = "./test.preset";
+            //Deserialize processors
+            IFormatter formatter = new BinaryFormatter();
+            Stream fstream = null;
+            try
+            {
+                fstream = new FileStream(loadLoc, FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException ex)
+            {
+                // Preset is not exist
+                // TODO: ask user to re-enter preset name/location
+            }
+            
+            if (fstream != null)
+            {
+                processors = (BindingList<IStringProcessor>) formatter.Deserialize(fstream);
+            }
+            else
+            {
+                //TODO: annound loading preset failure to user
+            }
         }
     }
 }

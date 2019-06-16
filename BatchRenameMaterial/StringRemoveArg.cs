@@ -9,6 +9,7 @@ namespace BatchRenameMaterial
     /// <summary>
     ///     Argument for Non-regex @<see cref="StringRemover"/>.
     /// </summary>
+    [Serializable]
     class StringRemoveArg
     {
         /// <summary>

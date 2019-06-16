@@ -9,6 +9,7 @@ namespace BatchRenameMaterial
     /// <summary>
     /// A non-Regex StringRemover.
     /// </summary>
+    [Serializable]
     class StringRemover : IStringProcessor
     {
         private StringRemoveArg removeRule;

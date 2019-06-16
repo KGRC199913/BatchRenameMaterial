@@ -10,6 +10,7 @@ namespace BatchRenameMaterial
     /// <summary>
     /// A regex string replacer.
     /// </summary>
+    [Serializable]
     class StringReplacer : IStringProcessor
     {
         private StringReplaceArg replaceRule;

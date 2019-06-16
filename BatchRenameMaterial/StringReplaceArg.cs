@@ -9,6 +9,7 @@ namespace BatchRenameMaterial
     /// <summary>
     /// Argrument for @<see cref="StringReplacer"/>.
     /// </summary>
+    [Serializable]
     class StringReplaceArg
     {
         /// <summary>

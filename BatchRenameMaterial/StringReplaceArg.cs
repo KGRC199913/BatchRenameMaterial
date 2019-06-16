@@ -19,5 +19,7 @@ namespace BatchRenameMaterial
         ///     A Regex to match needles in the haystack.
         /// </summary>
         public string ReplacePattern { get; set; }
+
+        public bool IgnoreCase { get; set; }
     }
 }

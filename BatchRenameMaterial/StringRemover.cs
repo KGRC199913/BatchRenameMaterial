@@ -15,6 +15,10 @@ namespace BatchRenameMaterial
 
         public StringRemoveArg Arg { get => removeRule; set => removeRule = value; }
 
+        public string Description
+            => $"Remove {removeRule.CharNumToDel} characters starting from {removeRule.StartIndex}";
+        
+
         /// <summary>
         ///      Remove a number of characters in a string.
         /// </summary>

@@ -15,6 +15,10 @@ namespace BatchRenameMaterial
         private StringReplaceArg replaceRule;
 
         public StringReplaceArg Arg { get => replaceRule; set => replaceRule = value; }
+
+        public string Description
+            => $"Replace string match pattern {replaceRule.ReplacePattern} with {replaceRule.ReplaceTarget}";
+
         /// <summary>
         ///     Replace tokens match with regex.
         /// </summary>
@@ -28,7 +32,10 @@ namespace BatchRenameMaterial
         {
             if (replaceRule == null)
                 return haystack;
-            var result = Regex.Replace(haystack, replaceRule.ReplacePattern, replaceRule.ReplaceTarget);
+
+            var regexOps = replaceRule.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None;
+                
+            var result = Regex.Replace(haystack, replaceRule.ReplacePattern, replaceRule.ReplaceTarget, regexOps);
             return result;
         }
     }

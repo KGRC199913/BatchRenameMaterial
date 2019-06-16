@@ -15,6 +15,23 @@
         x:Name="FrontWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000" MinHeight="600" MinWidth="850">
+    <Window.Resources>
+        <DataTemplate x:Key="ruleCard">
+            <materialDesign:Card>
+                <StackPanel Orientation="Vertical">
+                    <Label Content="{Binding Description}"/>
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <Button Name="removeThisRuleButton"  Margin="5, 0, 0, 5">
+                            <materialDesign:PackIcon Kind="Clear" Foreground="Red"/>
+                        </Button>
+                        <Button Name="configThisRuleButton" Margin="5, 0, 5, 5">
+                            <materialDesign:PackIcon Kind="Build" Foreground="Lime"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:Card>
+        </DataTemplate>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top"
               BorderBrush="Black"
@@ -39,7 +56,7 @@
                     BorderBrush="Black">
                 <StackPanel>
                     <Menu>
-                        <Button Name="startRenameButton" Width="50">
+                        <Button Name="startRenameButton" Width="50" Click="StartRenameButton_Click">
                             <materialDesign:PackIcon Kind="Play" Foreground="Teal"/>
                         </Button>
                         <Button Name="addRuleButton" Width="50">
@@ -69,7 +86,9 @@
                     </Menu>
                     <Separator BorderBrush="Black"/>
                     <ListView Name="rulesListView"
-                              ItemsSource="{Binding}">
+                              ItemsSource="{Binding}"
+                              ItemTemplate="{StaticResource ruleCard}"
+                              HorizontalContentAlignment="Stretch">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel/>

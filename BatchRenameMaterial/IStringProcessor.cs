@@ -21,5 +21,6 @@ namespace BatchRenameMaterial
         ///     result string.
         /// </returns>
         string Process(string haystack);
+        string Description { get; }
     }
 }

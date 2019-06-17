@@ -59,6 +59,17 @@ namespace BatchRenameMaterial
                         IgnoreCase = true
                     }
                 });
+            processors.Add(
+                new StringReplacer()
+                {
+                    Arg = new StringReplaceArg()
+                    {
+                        ReplacePattern = @"file",
+                        ReplaceTarget = "f",
+                        IgnoreCase = false
+                    }
+                });
+
             //
         }
 
@@ -96,7 +107,7 @@ namespace BatchRenameMaterial
             catch (IOException ex)
             {
                 // Preset is already exist
-                //TODO: ask user to re-enter new preset name/location
+                //TODO: ask user to re-enter new preset name/location OR ask user to override
             }
 
             if (fstream != null)
@@ -124,15 +135,60 @@ namespace BatchRenameMaterial
                 // Preset is not exist
                 // TODO: ask user to re-enter preset name/location
             }
-            
+
             if (fstream != null)
             {
-                processors = (BindingList<IStringProcessor>) formatter.Deserialize(fstream);
+                processors = (BindingList<IStringProcessor>)formatter.Deserialize(fstream);
             }
             else
             {
                 //TODO: annound loading preset failure to user
             }
+        }
+
+        private void RemoveThisRuleButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as Button).DataContext as IStringProcessor;
+            if (item != null)
+            {
+                processors.Remove(item);
+            }
+        }
+
+        private void AddRuleButton_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: Add config dialog
+            //TODO: get Args and rule type
+            //TODO: Create an Enum for types
+            //TODO: set type and arg base on user input
+            int type = 0;
+            object arg = null;
+            IStringProcessor processor = null;
+
+            // WILL BE DELETE
+            //TEST AREA
+            arg = new StringReplaceArg()
+            {
+                ReplacePattern = "01",
+                ReplaceTarget = "Cat"
+            };
+            //
+
+            // Create correct type of string processor
+            switch (type) 
+            {
+                case 0: // 0 is String regex replacer // SUBJECT OT BE CHANGED
+                    processor = new StringReplacer()
+                    {
+                        Arg = arg as StringReplaceArg
+                    };
+                    break;
+
+                default:
+                    break;
+            }
+
+            processors.Add(processor);
         }
     }
 }

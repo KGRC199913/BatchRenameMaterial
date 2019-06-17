@@ -18,7 +18,7 @@ namespace BatchRenameMaterial
         public StringReplaceArg Arg { get => replaceRule; set => replaceRule = value; }
 
         public string Description
-            => $"Replace string match pattern {replaceRule.ReplacePattern} with {replaceRule.ReplaceTarget}";
+            => $"Replace needles match the pattern \"\\{replaceRule.ReplacePattern}\" with \"{replaceRule.ReplaceTarget}\"";
 
         /// <summary>
         ///     Replace tokens match with regex.

@@ -21,7 +21,7 @@
                 <StackPanel Orientation="Vertical">
                     <Label Content="{Binding Description}"/>
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                        <Button Name="removeThisRuleButton"  Margin="5, 0, 0, 5">
+                        <Button Name="removeThisRuleButton"  Margin="5, 0, 0, 5" Click="RemoveThisRuleButton_Click">
                             <materialDesign:PackIcon Kind="Clear" Foreground="Red"/>
                         </Button>
                         <Button Name="configThisRuleButton" Margin="5, 0, 5, 5">
@@ -56,31 +56,31 @@
                     BorderBrush="Black">
                 <StackPanel>
                     <Menu>
-                        <Button Name="startRenameButton" Width="50" Click="StartRenameButton_Click">
+                        <Button Name="startRenameButton" Width="60" Click="StartRenameButton_Click">
                             <materialDesign:PackIcon Kind="Play" Foreground="Teal"/>
                         </Button>
-                        <Button Name="addRuleButton" Width="50">
+                        <Button Name="addRuleButton" Width="60" Click="AddRuleButton_Click">
                             <materialDesign:PackIcon Kind="Add" Foreground="Teal"/>
                         </Button>
-                        <Button Name="saveRulesButton" Width="50" Click="SaveRulesButton_Click">
+                        <Button Name="saveRulesButton" Width="60" Click="SaveRulesButton_Click">
                             <materialDesign:PackIcon Kind="ContentSave" Foreground="Teal"/>
                         </Button>
-                        <Button Name="loadRulesButton" Width="50" Click="LoadRulesButton_Click">
+                        <Button Name="loadRulesButton" Width="60" Click="LoadRulesButton_Click">
                             <materialDesign:PackIcon Kind="FolderOpen" Foreground="Teal"/>
                         </Button>
                     </Menu>
                     <Separator BorderBrush="Black"/>
                     <Menu>
-                        <Button Name="ruleUpButton" Width="50">
+                        <Button Name="ruleUpButton" Width="60">
                             <materialDesign:PackIcon Kind="ArrowDropUp" Foreground="Teal"/>
                         </Button>
-                        <Button Name="ruleDownButton" Width="50">
+                        <Button Name="ruleDownButton" Width="60">
                             <materialDesign:PackIcon Kind="ArrowDropDown" Foreground="Teal"/>
                         </Button>
-                        <Button Name="ruleUpMostButton" Width="50">
+                        <Button Name="ruleUpMostButton" Width="60">
                             <materialDesign:PackIcon Kind="ArrowUpward" Foreground="Teal"/>
                         </Button>
-                        <Button Name="ruleDownMostButton" Width="50">
+                        <Button Name="ruleDownMostButton" Width="60">
                             <materialDesign:PackIcon Kind="ArrowDownward" Foreground="Teal"/>
                         </Button>
                     </Menu>
@@ -103,8 +103,32 @@
                     BorderBrush="Black">
                 <StackPanel>
                     <Menu>
-                        <Button Name="addFileButton" Width="50">
+                        <Button Name="addFileButton" Width="60">
                             <materialDesign:PackIcon Kind="NoteAdd" Foreground="Teal"/>
+                        </Button>
+                        <Button Name="fileUpButton" Width="60">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="ArrowDropUp" Foreground="Teal"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Name="fileDownButton" Width="60">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="ArrowDropDown" Foreground="Teal"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Name="fileUpMostButton" Width="60">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="ArrowUpward" Foreground="Teal"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Name="fileDownMostButton" Width="60">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="ArrowDownward" Foreground="Teal"/>
+                            </StackPanel>
                         </Button>
                     </Menu>
                     <Separator BorderBrush="Black"/>

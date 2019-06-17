@@ -19,7 +19,9 @@
         <DataTemplate x:Key="ruleCard">
             <materialDesign:Card>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding Description}"/>
+                    <Label>
+                        <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Description}"/>
+                    </Label>
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                         <Button Name="removeThisRuleButton"  Margin="5, 0, 0, 5" Click="RemoveThisRuleButton_Click">
                             <materialDesign:PackIcon Kind="Clear" Foreground="Red"/>
@@ -71,16 +73,16 @@
                     </Menu>
                     <Separator BorderBrush="Black"/>
                     <Menu>
-                        <Button Name="ruleUpButton" Width="60">
+                        <Button Name="ruleUpButton" Width="60" Click="RuleUpButton_Click">
                             <materialDesign:PackIcon Kind="ArrowDropUp" Foreground="Teal"/>
                         </Button>
-                        <Button Name="ruleDownButton" Width="60">
+                        <Button Name="ruleDownButton" Width="60" Click="RuleDownButton_Click">
                             <materialDesign:PackIcon Kind="ArrowDropDown" Foreground="Teal"/>
                         </Button>
-                        <Button Name="ruleUpMostButton" Width="60">
+                        <Button Name="ruleUpMostButton" Width="60" Click="RuleUpMostButton_Click">
                             <materialDesign:PackIcon Kind="ArrowUpward" Foreground="Teal"/>
                         </Button>
-                        <Button Name="ruleDownMostButton" Width="60">
+                        <Button Name="ruleDownMostButton" Width="60" Click="RuleDownMostButton_Click">
                             <materialDesign:PackIcon Kind="ArrowDownward" Foreground="Teal"/>
                         </Button>
                     </Menu>
@@ -88,7 +90,9 @@
                     <ListView Name="rulesListView"
                               ItemsSource="{Binding}"
                               ItemTemplate="{StaticResource ruleCard}"
-                              HorizontalContentAlignment="Stretch">
+                              HorizontalContentAlignment="Stretch"
+                              SelectionMode="Single"
+                              SelectionChanged="RulesListView_SelectionChanged">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel/>

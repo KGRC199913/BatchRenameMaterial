@@ -34,6 +34,7 @@ namespace BatchRenameMaterial
             this.DataContext = this;
             this.filesDataGrid.DataContext = files;
             this.rulesListView.DataContext = processors;
+            SetStateRulePositionControl(false);
 
             // TEST AREA
             //TO BE DELETE
@@ -189,6 +190,74 @@ namespace BatchRenameMaterial
             }
 
             processors.Add(processor);
+        }
+
+        private void SwapListPosition<T>(int first, int second, Collection<T> list)
+        {
+            var temp = list[first];
+            list[first] = list[second];
+            list[second] = temp;
+        }
+
+        private void RulesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (rulesListView.SelectedIndex < 0)
+            {
+                SetStateRulePositionControl(false);
+            }
+            else
+            {
+                SetStateRulePositionControl(true);
+            }
+
+            if (rulesListView.SelectedIndex == (processors.Count - 1))
+            {
+                ruleDownMostButton.IsEnabled = ruleDownButton.IsEnabled = false;
+            } else
+            {
+                if (rulesListView.SelectedIndex == 0)
+                {
+                    ruleUpMostButton.IsEnabled = ruleUpButton.IsEnabled = false;
+                }
+            }
+        }
+
+        private void SetStateRulePositionControl(bool isEnable)
+        {
+            ruleUpButton.IsEnabled = 
+                ruleUpMostButton.IsEnabled =
+                    ruleDownButton.IsEnabled =
+                        ruleDownMostButton.IsEnabled = isEnable;
+        }
+
+        private void RuleUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = rulesListView.SelectedIndex;
+            SwapListPosition(selected, selected - 1, processors);
+            rulesListView.SelectedIndex = selected - 1;
+        }
+
+        private void RuleDownButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = rulesListView.SelectedIndex;
+            SwapListPosition(selected, selected + 1, processors);
+            rulesListView.SelectedIndex = selected + 1;
+        }
+
+        private void RuleUpMostButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = processors[rulesListView.SelectedIndex];
+            processors.Remove(item);
+            processors.Insert(0, item);
+            rulesListView.SelectedIndex = 0;
+        }
+
+        private void RuleDownMostButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = processors[rulesListView.SelectedIndex];
+            processors.Remove(item);
+            processors.Add(item);
+            rulesListView.SelectedIndex = processors.Count - 1;
         }
     }
 }

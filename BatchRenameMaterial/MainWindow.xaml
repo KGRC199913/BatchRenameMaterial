@@ -23,11 +23,13 @@
                         <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Description}"/>
                     </Label>
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                        <Button Name="removeThisRuleButton"  Margin="5, 0, 0, 5" Click="RemoveThisRuleButton_Click">
-                            <materialDesign:PackIcon Kind="Clear" Foreground="Red"/>
+                        <Button Name="removeThisRuleButton" Margin="10, 0, 0, 5" Width="30" Height="30" Style="{StaticResource MaterialDesignFloatingActionAccentButton
+}" Click="RemoveThisRuleButton_Click">
+                            <materialDesign:PackIcon Kind="Clear"/>
                         </Button>
-                        <Button Name="configThisRuleButton" Margin="5, 0, 5, 5">
-                            <materialDesign:PackIcon Kind="Build" Foreground="Lime"/>
+                        <Button Name="configThisRuleButton" Margin="10, 0, 10, 5" Width="30" Height="30" Style="{StaticResource MaterialDesignFloatingActionAccentButton
+}">
+                            <materialDesign:PackIcon Kind="Build"/>
                         </Button>
                     </StackPanel>
                 </StackPanel>
@@ -36,9 +38,17 @@
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top"
-              BorderBrush="Black"
-              BorderThickness="1">
-            <Label Content="Place Holder"/>
+              Height="Auto"
+              FlowDirection="RightToLeft">
+            <MenuItem Height="30">
+                <MenuItem.Header>
+                    <materialDesign:PackIcon Kind="Menu"/>
+                </MenuItem.Header>
+                <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
+                    <TextBlock Text="Dark Mode" Margin="0, 0, 10, 0"/>
+                    <ToggleButton Name="IsDarkModeToggleButton"/>
+                </StackPanel>
+            </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
@@ -54,36 +64,36 @@
 
             <Border Grid.Column="0" 
                     Grid.ColumnSpan="2" 
-                    BorderThickness="1" 
+                    BorderThickness="0, 1, 0, 0" 
                     BorderBrush="Black">
                 <StackPanel>
                     <Menu>
                         <Button Name="startRenameButton" Width="60" Click="StartRenameButton_Click">
-                            <materialDesign:PackIcon Kind="Play" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="Play"/>
                         </Button>
                         <Button Name="addRuleButton" Width="60" Click="AddRuleButton_Click">
-                            <materialDesign:PackIcon Kind="Add" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="Add"/>
                         </Button>
                         <Button Name="saveRulesButton" Width="60" Click="SaveRulesButton_Click">
-                            <materialDesign:PackIcon Kind="ContentSave" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="ContentSave"/>
                         </Button>
                         <Button Name="loadRulesButton" Width="60" Click="LoadRulesButton_Click">
-                            <materialDesign:PackIcon Kind="FolderOpen" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="FolderOpen"/>
                         </Button>
                     </Menu>
                     <Separator BorderBrush="Black"/>
                     <Menu>
                         <Button Name="ruleUpButton" Width="60" Click="RuleUpButton_Click">
-                            <materialDesign:PackIcon Kind="ArrowDropUp" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="ArrowDropUp"/>
                         </Button>
                         <Button Name="ruleDownButton" Width="60" Click="RuleDownButton_Click">
-                            <materialDesign:PackIcon Kind="ArrowDropDown" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="ArrowDropDown"/>
                         </Button>
                         <Button Name="ruleUpMostButton" Width="60" Click="RuleUpMostButton_Click">
-                            <materialDesign:PackIcon Kind="ArrowUpward" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="ArrowUpward"/>
                         </Button>
                         <Button Name="ruleDownMostButton" Width="60" Click="RuleDownMostButton_Click">
-                            <materialDesign:PackIcon Kind="ArrowDownward" Foreground="Teal"/>
+                            <materialDesign:PackIcon Kind="ArrowDownward"/>
                         </Button>
                     </Menu>
                     <Separator BorderBrush="Black"/>
@@ -103,35 +113,44 @@
             </Border>
             <Border Grid.Column="2" 
                     Grid.ColumnSpan="3" 
-                    BorderThickness="1"
+                    BorderThickness="1, 1, 0, 0"
                     BorderBrush="Black">
                 <StackPanel>
                     <Menu>
-                        <Button Name="addFileButton" Width="60">
-                            <materialDesign:PackIcon Kind="NoteAdd" Foreground="Teal"/>
+                        <Button Name="addFilesButton" Width="60" Click="AddFilesButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="File"/>
+                                <materialDesign:PackIcon Kind="Plus"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Name="addFoldersButton" Width="60" Click="AddFoldersButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Folder"/>
+                                <materialDesign:PackIcon Kind="Plus"/>
+                            </StackPanel>
                         </Button>
                         <Button Name="fileUpButton" Width="60">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
-                                <materialDesign:PackIcon Kind="ArrowDropUp" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="File"/>
+                                <materialDesign:PackIcon Kind="ArrowDropUp"/>
                             </StackPanel>
                         </Button>
                         <Button Name="fileDownButton" Width="60">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
-                                <materialDesign:PackIcon Kind="ArrowDropDown" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="File"/>
+                                <materialDesign:PackIcon Kind="ArrowDropDown"/>
                             </StackPanel>
                         </Button>
                         <Button Name="fileUpMostButton" Width="60">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
-                                <materialDesign:PackIcon Kind="ArrowUpward" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="File"/>
+                                <materialDesign:PackIcon Kind="ArrowUpward"/>
                             </StackPanel>
                         </Button>
                         <Button Name="fileDownMostButton" Width="60">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="File" Foreground="Teal"/>
-                                <materialDesign:PackIcon Kind="ArrowDownward" Foreground="Teal"/>
+                                <materialDesign:PackIcon Kind="File"/>
+                                <materialDesign:PackIcon Kind="ArrowDownward"/>
                             </StackPanel>
                         </Button>
                     </Menu>

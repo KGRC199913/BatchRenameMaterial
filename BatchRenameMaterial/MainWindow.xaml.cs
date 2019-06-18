@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BatchRenameMaterial
 {
@@ -74,18 +63,21 @@ namespace BatchRenameMaterial
             //
         }
 
+        /// <summary>
+        /// UpdateNewName for all name in files list.
+        /// </summary>
         private void UpdateNewName()
         {
-            // Parallel process the file name to new name
-            Parallel.ForEach(files, file =>
+            foreach (var file in files)
             {
                 file.NewName = file.Name;
                 foreach (var processor in processors)
                 {
                     file.NewName = processor.Process(file.NewName);
                 }
-            });
+            };
         }
+
         // SUBJECT TO BE CHANGED
         private void StartRenameButton_Click(object sender, RoutedEventArgs e)
         {
@@ -176,7 +168,7 @@ namespace BatchRenameMaterial
             //
 
             // Create correct type of string processor
-            switch (type) 
+            switch (type)
             {
                 case 0: // 0 is String regex replacer // SUBJECT OT BE CHANGED
                     processor = new StringReplacer()
@@ -192,6 +184,18 @@ namespace BatchRenameMaterial
             processors.Add(processor);
         }
 
+
+        /// <summary>
+        /// Swap item position in a collection<typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="first">
+        /// first item's index
+        /// </param>
+        /// <param name="second">
+        /// second item's index
+        /// </param>
+        /// <param name="list"></param>
         private void SwapListPosition<T>(int first, int second, Collection<T> list)
         {
             var temp = list[first];
@@ -213,7 +217,8 @@ namespace BatchRenameMaterial
             if (rulesListView.SelectedIndex == (processors.Count - 1))
             {
                 ruleDownMostButton.IsEnabled = ruleDownButton.IsEnabled = false;
-            } else
+            }
+            else
             {
                 if (rulesListView.SelectedIndex == 0)
                 {
@@ -222,9 +227,15 @@ namespace BatchRenameMaterial
             }
         }
 
+        /// <summary>
+        /// Change all positioning button to enable/disable
+        /// </summary>
+        /// <param name="isEnable">
+        /// State to be set for buttons
+        /// </param>
         private void SetStateRulePositionControl(bool isEnable)
         {
-            ruleUpButton.IsEnabled = 
+            ruleUpButton.IsEnabled =
                 ruleUpMostButton.IsEnabled =
                     ruleDownButton.IsEnabled =
                         ruleDownMostButton.IsEnabled = isEnable;
@@ -258,6 +269,34 @@ namespace BatchRenameMaterial
             processors.Remove(item);
             processors.Add(item);
             rulesListView.SelectedIndex = processors.Count - 1;
+        }
+
+        private void AddFilesButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "All File|*.*";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                foreach (var fileFullName in openFileDialog.FileNames)
+                {
+                    files.Add(new File()
+                    {
+                        Name = System.IO.Path.GetFileName(fileFullName),
+                        Path = System.IO.Path.GetDirectoryName(fileFullName)
+                    });
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void AddFoldersButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

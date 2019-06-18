@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -31,13 +32,15 @@ namespace BatchRenameMaterial
                 new File()
                 {
                     Name = "Test_file",
-                    Path = "C:/FAKE"
+                    Path = "C:/FAKE",
+                    IsFile = true
                 });
             files.Add(
                 new File()
                 {
                     Name = "Test_file01",
-                    Path = "C:/FAKE"
+                    Path = "C:/FAKE",
+                    IsFile = true
                 });
             processors.Add(
                 new StringReplacer()
@@ -284,7 +287,8 @@ namespace BatchRenameMaterial
                     files.Add(new File()
                     {
                         Name = System.IO.Path.GetFileName(fileFullName),
-                        Path = System.IO.Path.GetDirectoryName(fileFullName)
+                        Path = System.IO.Path.GetDirectoryName(fileFullName),
+                        IsFile = true
                     });
                 }
             }
@@ -296,7 +300,32 @@ namespace BatchRenameMaterial
 
         private void AddFoldersButton_Click(object sender, RoutedEventArgs e)
         {
+            CommonOpenFileDialog fileDialog = new CommonOpenFileDialog();
+            fileDialog.IsFolderPicker = true;
+            fileDialog.Multiselect = true;
 
+            string[] subfolders;
+            if (fileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                foreach (var folderFullName in fileDialog.FileNames)
+                {
+                    subfolders = Directory.GetDirectories(folderFullName);
+                    foreach (var subfolder in subfolders)
+                    {
+                        files.Add(
+                            new File()
+                            {
+                                Name = new DirectoryInfo(subfolder).Name,
+                                Path = folderFullName,
+                                IsFile = false
+                            });
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

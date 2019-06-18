@@ -162,6 +162,18 @@
                               CanUserAddRows="False"
                               Margin="0, 4, 0, 0">
                         <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="0.5*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:PackIcon x:Name="fileTypeIcon" Kind="File"/>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Path=IsFile}" Value="False">
+                                                <Setter Property="Kind" Value="Folder" TargetName="fileTypeIcon"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <materialDesign:MaterialDataGridTextColumn Header="File Name" Width="2*"
                                                                        Binding="{Binding Name}"/>
                             <materialDesign:MaterialDataGridTextColumn Header="New Name" Width="2*"

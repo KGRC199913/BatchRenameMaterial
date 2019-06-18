@@ -13,6 +13,7 @@ namespace BatchRenameMaterial
         private string newName;
         private string path;
         private string error;
+        private Boolean isFile;
 
         public string Name
         {
@@ -44,6 +45,15 @@ namespace BatchRenameMaterial
             {
                 error = value;
                 OnPropertyChanged("Error");
+            }
+        }
+
+        public bool IsFile {
+            get => isFile;
+            set
+            {
+                isFile = value;
+                OnPropertyChanged("IsFile");
             }
         }
 

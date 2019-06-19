@@ -155,33 +155,39 @@ namespace BatchRenameMaterial
 
         private void AddRuleButton_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: let user choose type
+
             //TODO: Add config dialog
+            DialogType type = DialogType.RemoverConfigDialog;
+            object arg = null;
+
+            ConfigDialog cfDialog = new ConfigDialog(type);
+            if (cfDialog.ShowDialog() == true)
+            {
+                arg = cfDialog.ArgReturn;
+            }
+            // set type and arg base on user input
+            
             //TODO: get Args and rule type
             //TODO: Create an Enum for types
-            //TODO: set type and arg base on user input
-            int type = 0;
-            object arg = null;
+            
             IStringProcessor processor = null;
-
-            // WILL BE DELETE
-            //TEST AREA
-            arg = new StringReplaceArg()
-            {
-                ReplacePattern = "01",
-                ReplaceTarget = "Cat"
-            };
-            //
 
             // Create correct type of string processor
             switch (type)
             {
-                case 0: // 0 is String regex replacer // SUBJECT OT BE CHANGED
+                case DialogType.ReplacerConfigDialog: // 0 is String regex replacer // SUBJECT OT BE CHANGED
                     processor = new StringReplacer()
                     {
                         Arg = arg as StringReplaceArg
                     };
                     break;
-
+                case DialogType.RemoverConfigDialog:
+                    processor = new StringRemover()
+                    {
+                        Arg = arg as StringRemoveArg
+                    };
+                    break;
                 default:
                     break;
             }

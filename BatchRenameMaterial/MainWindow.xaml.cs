@@ -165,6 +165,9 @@ namespace BatchRenameMaterial
             if (cfDialog.ShowDialog() == true)
             {
                 arg = cfDialog.ArgReturn;
+            } else
+            {
+                return;
             }
             // set type and arg base on user input
             

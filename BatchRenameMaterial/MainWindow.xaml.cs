@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -326,6 +327,17 @@ namespace BatchRenameMaterial
             {
                 return;
             }
+        }
+
+        private void IsDarkModeToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml");
+
+        }
+
+        private void IsDarkModeToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml");
         }
     }
 }

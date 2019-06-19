@@ -46,7 +46,9 @@
                 </MenuItem.Header>
                 <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
                     <TextBlock Text="Dark Mode" Margin="0, 0, 10, 0"/>
-                    <ToggleButton Name="IsDarkModeToggleButton"/>
+                    <ToggleButton Name="IsDarkModeToggleButton"
+                                  Checked="IsDarkModeToggleButton_Checked"  
+                                  Unchecked="IsDarkModeToggleButton_Unchecked"/>
                 </StackPanel>
             </MenuItem>
         </Menu>

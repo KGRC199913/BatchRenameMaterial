@@ -44,8 +44,8 @@
                 <MenuItem.Header>
                     <materialDesign:PackIcon Kind="Menu"/>
                 </MenuItem.Header>
-                <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
-                    <TextBlock Text="Dark Mode" Margin="0, 0, 10, 0"/>
+                <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" VerticalAlignment="Center" Margin="0" >
+                    <TextBlock Text="Dark Mode" Margin="0, 0, 10, 0" VerticalAlignment="Center"/>
                     <ToggleButton Name="IsDarkModeToggleButton"
                                   Checked="IsDarkModeToggleButton_Checked"  
                                   Unchecked="IsDarkModeToggleButton_Unchecked"/>

@@ -25,6 +25,7 @@ namespace BatchRenameMaterial
             this.DataContext = this;
             this.filesDataGrid.DataContext = files;
             this.rulesListView.DataContext = processors;
+            this.fileCountStackPanel.DataContext = files;
             SetStateRulePositionControl(false);
 
             // TEST AREA
@@ -277,6 +278,7 @@ namespace BatchRenameMaterial
 
         private void AddFilesButton_Click(object sender, RoutedEventArgs e)
         {
+            filesDataGrid.SelectedIndex = -1;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = true;
             openFileDialog.Filter = "All File|*.*";
@@ -332,12 +334,76 @@ namespace BatchRenameMaterial
         private void IsDarkModeToggleButton_Checked(object sender, RoutedEventArgs e)
         {
             Application.Current.Resources.MergedDictionaries[0].Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml");
-
+            Application.Current.Resources.MergedDictionaries[3].Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml");
         }
 
         private void IsDarkModeToggleButton_Unchecked(object sender, RoutedEventArgs e)
         {
             Application.Current.Resources.MergedDictionaries[0].Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml");
+            
+            Application.Current.Resources.MergedDictionaries[2].Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Teal.xaml");
+            Application.Current.Resources.MergedDictionaries[3].Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml");
+        }
+
+        private void FilesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (filesDataGrid.SelectedIndex < 0)
+            {
+                SetEnableFilePositioningButtons(false);
+            } else
+            {
+                SetEnableFilePositioningButtons(true);
+            }
+
+            if (filesDataGrid.SelectedIndex == 0)
+            {
+                fileUpButton.IsEnabled = fileUpMostButton.IsEnabled = false;
+            }
+            else
+            {
+                if (filesDataGrid.SelectedIndex == (files.Count - 1))
+                {
+                    fileDownButton.IsEnabled = fileDownMostButton.IsEnabled = false;
+                }
+            }
+        }
+
+        private void SetEnableFilePositioningButtons(bool isEnable)
+        {
+            fileUpButton.IsEnabled =
+                                fileDownButton.IsEnabled =
+                                    fileUpMostButton.IsEnabled =
+                                        fileDownMostButton.IsEnabled = isEnable;
+        }
+
+        private void FileUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            int currentRow = filesDataGrid.SelectedIndex;
+            SwapListPosition(currentRow, currentRow - 1, files);
+            filesDataGrid.SelectedIndex = currentRow - 1;
+        }
+
+        private void FileDownButton_Click(object sender, RoutedEventArgs e)
+        {
+            int currentRow = filesDataGrid.SelectedIndex;
+            SwapListPosition(currentRow, currentRow + 1, files);
+            filesDataGrid.SelectedIndex = currentRow + 1;
+        }
+
+        private void FileUpMostButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = files[filesDataGrid.SelectedIndex];
+            files.Remove(item);
+            files.Insert(0, item);
+            filesDataGrid.SelectedIndex = 0;
+        }
+
+        private void FileDownMostButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = files[filesDataGrid.SelectedIndex];
+            files.Remove(item);
+            files.Add(item);
+            filesDataGrid.SelectedIndex = files.Count - 1;
         }
     }
 }

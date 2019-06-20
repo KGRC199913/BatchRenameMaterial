@@ -287,20 +287,6 @@ namespace BatchRenameMaterial
             rulesListView.SelectedIndex = processors.Count - 1;
         }
 
-        private bool isAddedFile(string name, string path)
-        {
-            File newfile = new File()
-            {
-                Name = name,
-                Path = path
-            };
-            foreach (var file in files)
-            {
-                if (file.Equals(newfile)) return true;
-            }
-            return false;
-        }
-
         private void AddFilesButton_Click(object sender, RoutedEventArgs e)
         {
             filesDataGrid.SelectedIndex = -1;
@@ -308,20 +294,19 @@ namespace BatchRenameMaterial
             openFileDialog.Multiselect = true;
             openFileDialog.Filter = "All File|*.*";
 
-            string fileName, filePath;
+            File newfile;
             if (openFileDialog.ShowDialog() == true)
             {
                 foreach (var fileFullName in openFileDialog.FileNames)
                 {
-                    fileName = System.IO.Path.GetFileName(fileFullName);
-                    filePath = System.IO.Path.GetDirectoryName(fileFullName);
-                    if (isAddedFile(fileName, filePath)) continue;
-                    files.Add(new File()
+                    newfile = new File()
                     {
-                        Name = fileName,
-                        Path = filePath,
+                        Name = System.IO.Path.GetFileName(fileFullName),
+                        Path = System.IO.Path.GetDirectoryName(fileFullName),
                         IsFile = true
-                    });
+                    };
+                    if (files.Contains(newfile)) continue;
+                    files.Add(newfile);
                 }
             }
             else
@@ -337,7 +322,7 @@ namespace BatchRenameMaterial
             fileDialog.Multiselect = true;
 
             string[] subfolders;
-            string folderName;
+            File newfolder;
             if (fileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 foreach (var folderFullName in fileDialog.FileNames)
@@ -345,15 +330,14 @@ namespace BatchRenameMaterial
                     subfolders = Directory.GetDirectories(folderFullName);
                     foreach (var subfolder in subfolders)
                     {
-                        folderName = new DirectoryInfo(subfolder).Name;
-                        if (isAddedFile(folderName, folderFullName)) continue;
-                        files.Add(
-                            new File()
-                            {
-                                Name = folderName,
-                                Path = folderFullName,
-                                IsFile = false
-                            });
+                        newfolder = new File()
+                        {
+                            Name = new DirectoryInfo(subfolder).Name,
+                            Path = subfolder,
+                            IsFile = false
+                        };
+                        if (files.Contains(newfolder)) continue;
+                        files.Add(newfolder);
                     }
                 }
             }

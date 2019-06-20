@@ -57,9 +57,10 @@ namespace BatchRenameMaterial
             }
         }
 
-        public bool Equals(File file)
+        public override bool Equals(object obj)
         {
-            return name == file.name && path == file.path;
+            File newfile = (File)obj;
+            return name == newfile.name && path == newfile.path && isFile == newfile.isFile;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace BatchRenameMaterial
 {
@@ -16,6 +17,7 @@ namespace BatchRenameMaterial
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<string> addedItems = new List<string>();
         ObservableCollection<File> files = new ObservableCollection<File>();
         BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
 
@@ -296,6 +298,8 @@ namespace BatchRenameMaterial
             {
                 foreach (var fileFullName in openFileDialog.FileNames)
                 {
+                    if (addedItems.Contains(fileFullName)) continue;
+                    else addedItems.Add(fileFullName);
                     files.Add(new File()
                     {
                         Name = System.IO.Path.GetFileName(fileFullName),
@@ -324,6 +328,8 @@ namespace BatchRenameMaterial
                     subfolders = Directory.GetDirectories(folderFullName);
                     foreach (var subfolder in subfolders)
                     {
+                        if (addedItems.Contains(folderFullName)) continue;
+                        else addedItems.Add(folderFullName);
                         files.Add(
                             new File()
                             {

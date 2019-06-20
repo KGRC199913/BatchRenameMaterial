@@ -167,15 +167,16 @@ namespace BatchRenameMaterial
             if (cfDialog.ShowDialog() == true)
             {
                 arg = cfDialog.ArgReturn;
-            } else
+            }
+            else
             {
                 return;
             }
             // set type and arg base on user input
-            
+
             //TODO: get Args and rule type
             //TODO: Create an Enum for types
-            
+
             IStringProcessor processor = null;
 
             // Create correct type of string processor
@@ -325,11 +326,12 @@ namespace BatchRenameMaterial
             {
                 foreach (var folderFullName in fileDialog.FileNames)
                 {
+                    if (addedItems.Contains(folderFullName)) continue;
+                    else addedItems.Add(folderFullName);
                     subfolders = Directory.GetDirectories(folderFullName);
                     foreach (var subfolder in subfolders)
                     {
-                        if (addedItems.Contains(folderFullName)) continue;
-                        else addedItems.Add(folderFullName);
+
                         files.Add(
                             new File()
                             {
@@ -365,7 +367,8 @@ namespace BatchRenameMaterial
             if (filesDataGrid.SelectedIndex < 0)
             {
                 SetEnableFilePositioningButtons(false);
-            } else
+            }
+            else
             {
                 SetEnableFilePositioningButtons(true);
             }

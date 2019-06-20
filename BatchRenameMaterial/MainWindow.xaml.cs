@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace BatchRenameMaterial
 {
@@ -165,15 +166,16 @@ namespace BatchRenameMaterial
             if (cfDialog.ShowDialog() == true)
             {
                 arg = cfDialog.ArgReturn;
-            } else
+            }
+            else
             {
                 return;
             }
             // set type and arg base on user input
-            
+
             //TODO: get Args and rule type
             //TODO: Create an Enum for types
-            
+
             IStringProcessor processor = null;
 
             // Create correct type of string processor
@@ -292,16 +294,19 @@ namespace BatchRenameMaterial
             openFileDialog.Multiselect = true;
             openFileDialog.Filter = "All File|*.*";
 
+            File newfile;
             if (openFileDialog.ShowDialog() == true)
             {
                 foreach (var fileFullName in openFileDialog.FileNames)
                 {
-                    files.Add(new File()
+                    newfile = new File()
                     {
                         Name = System.IO.Path.GetFileName(fileFullName),
                         Path = System.IO.Path.GetDirectoryName(fileFullName),
                         IsFile = true
-                    });
+                    };
+                    if (files.Contains(newfile)) continue;
+                    files.Add(newfile);
                 }
             }
             else
@@ -317,6 +322,7 @@ namespace BatchRenameMaterial
             fileDialog.Multiselect = true;
 
             string[] subfolders;
+            File newfolder;
             if (fileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 foreach (var folderFullName in fileDialog.FileNames)
@@ -324,13 +330,14 @@ namespace BatchRenameMaterial
                     subfolders = Directory.GetDirectories(folderFullName);
                     foreach (var subfolder in subfolders)
                     {
-                        files.Add(
-                            new File()
-                            {
-                                Name = new DirectoryInfo(subfolder).Name,
-                                Path = folderFullName,
-                                IsFile = false
-                            });
+                        newfolder = new File()
+                        {
+                            Name = new DirectoryInfo(subfolder).Name,
+                            Path = subfolder,
+                            IsFile = false
+                        };
+                        if (files.Contains(newfolder)) continue;
+                        files.Add(newfolder);
                     }
                 }
             }
@@ -359,7 +366,8 @@ namespace BatchRenameMaterial
             if (filesDataGrid.SelectedIndex < 0)
             {
                 SetEnableFilePositioningButtons(false);
-            } else
+            }
+            else
             {
                 SetEnableFilePositioningButtons(true);
             }

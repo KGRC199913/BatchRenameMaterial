@@ -57,6 +57,12 @@ namespace BatchRenameMaterial
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            File newfile = (File)obj;
+            return name == newfile.name && path == newfile.path && isFile == newfile.isFile;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

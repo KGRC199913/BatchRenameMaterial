@@ -10,7 +10,7 @@ namespace BatchRenameMaterial
     /// A non-Regex StringUpperCaser
     /// </sumary>
     [Serializable]
-    class StringTrim : IStringProcessor
+    class StringTrimer : IStringProcessor
     {
         public string Description
             => $"Remove all leading + trailing white space";
@@ -25,10 +25,7 @@ namespace BatchRenameMaterial
         ///    A modified string.
         /// </returns>
         public string Process(string haystack)
-        {
-            var result = haystack.Trim();
-            return result;
-        }
+            => haystack.Trim();
 
     }
 }

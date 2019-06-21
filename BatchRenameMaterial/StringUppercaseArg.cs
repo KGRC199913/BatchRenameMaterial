@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace BatchRenameMaterial
 {
     /// <summary>
-    ///     Argument for Non-regex @<see cref="StringUppercaser"/>.
+    ///     Argument for Non-regex @<see cref="StringUpperCaser"/> and @<see cref="StringLowerCaser"/>.
     /// </summary>
     [Serializable]
-    public class StringUppercaseArg
+    public class StringCaseArg
     {
         /// <summary>
         ///     Begin postion for Uppercasing (First character is [0])

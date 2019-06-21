@@ -12,9 +12,9 @@ namespace BatchRenameMaterial
     [Serializable]
     class StringUpperCaser : IStringProcessor
     {
-        private StringUppercaseArg uppercaseRule;
+        private StringCaseArg uppercaseRule;
 
-        public StringUppercaseArg Arg {get =>uppercaseRule;set=>uppercaseRule=value; }
+        public StringCaseArg Arg {get =>uppercaseRule;set=>uppercaseRule=value; }
 
         public string Description
             => $"Uppercase from {uppercaseRule.StartIndex + 1} to {uppercaseRule.EndIndex + 1}";

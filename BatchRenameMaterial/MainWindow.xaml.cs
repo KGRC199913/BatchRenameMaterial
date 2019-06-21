@@ -135,12 +135,16 @@ namespace BatchRenameMaterial
             //TODO: create a dialog to get name/location
             //TODO: get preset name/location from user (save to loadLoc)
             string loadLoc = "./test.preset";
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Preset file (*.preset)| *.preset";
+            openFileDialog.Multiselect = false;
+
             if (openFileDialog.ShowDialog() == true)
             {
                 loadLoc = openFileDialog.FileName;
             }
+            
             //Deserialize processors
             IFormatter formatter = new BinaryFormatter();
             Stream fstream = null;

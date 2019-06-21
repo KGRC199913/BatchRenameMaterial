@@ -12,9 +12,9 @@ namespace BatchRenameMaterial
     [Serializable]
     class StringLowerCaser : IStringProcessor
     {
-        private StringLowercaseArg uppercaseRule;
+        private StringCasingArg uppercaseRule;
 
-        public StringLowercaseArg Arg {get =>uppercaseRule;set=>uppercaseRule=value; }
+        public StringCasingArg Arg {get =>uppercaseRule;set=>uppercaseRule=value; }
 
         public string Description
             => $"Lowercase from {uppercaseRule.StartIndex + 1} to {uppercaseRule.EndIndex + 1}";

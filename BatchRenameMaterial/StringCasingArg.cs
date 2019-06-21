@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 namespace BatchRenameMaterial
 {
     /// <summary>
-    ///     Argument for Non-regex @<see cref="StringUppercaser"/>.
+    ///     Argument for Non-regex @<see cref="StringLowercaser"> <see cref="StringUppercaser"> />.
     /// </summary>
     [Serializable]
-    public class StringUppercaseArg
+    public class StringCasingArg
     {
         /// <summary>
-        ///     Begin postion for Uppercasing (First character is [0])
+        ///     Begin postion for Casing (First character is [0])
         /// </summary>
         public int StartIndex { get; set; }
 
         /// <summary>
-        ///    Last postion for Uppercasing (Last character is [length])
+        ///    Last postion for Casing (Last character is [length])
         /// </summary>
         public int EndIndex {get; set;}
 

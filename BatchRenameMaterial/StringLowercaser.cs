@@ -32,8 +32,10 @@ namespace BatchRenameMaterial
         {
             if (lowercaseRule.EndIndex >= haystack.Length)
                 lowercaseRule.EndIndex = haystack.Length -1;
-            var needToLower = haystack.Substring(lowercaseRule.StartIndex, lowercaseRule.EndIndex - lowercaseRule.StartIndex +1);
-            var result = needToLower.ToLower();
+            var result = new StringBuilder(haystack.Substring(0, lowercaseRule.StartIndex))
+                            .Append(haystack.Substring(lowercaseRule.StartIndex, lowercaseRule.EndIndex - lowercaseRule.StartIndex + 1).ToLower())
+                            .Append(haystack.Substring(lowercaseRule.EndIndex + 1, haystack.Length - lowercaseRule.EndIndex - 1))
+                            .ToString();
             return result;
         }
 

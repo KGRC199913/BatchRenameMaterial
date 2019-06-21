@@ -18,9 +18,9 @@ namespace BatchRenameMaterial
         public int StartIndex { get; set; }
 
         /// <summary>
-        ///    Last postion for Uppercasing (Last character is [length])
+        ///    Last postion for Uppercasing (Last character is [length - 1])
         /// </summary>
-        public int EndIndex {get; set;}
+        public int EndIndex { get; set; }
 
     }
 }

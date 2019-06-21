@@ -159,7 +159,7 @@ namespace BatchRenameMaterial
             //TODO: let user choose type
 
             //TODO: Add config dialog
-            DialogType type = DialogType.RemoverConfigDialog;
+            DialogType type = DialogType.LowerCaserConfigDialog;
             object arg = null;
 
             ConfigDialog cfDialog = new ConfigDialog(type);
@@ -191,6 +191,18 @@ namespace BatchRenameMaterial
                     processor = new StringRemover()
                     {
                         Arg = arg as StringRemoveArg
+                    };
+                    break;
+                case DialogType.UpperCaserConfigDialog:
+                    processor = new StringUpperCaser()
+                    {
+                        Arg = arg as StringCaseArg
+                    };
+                    break;
+                case DialogType.LowerCaserConfigDialog:
+                    processor = new StringLowerCaser()
+                    {
+                        Arg = arg as StringCaseArg
                     };
                     break;
                 default:

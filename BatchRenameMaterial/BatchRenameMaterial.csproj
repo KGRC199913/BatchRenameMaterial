@@ -56,6 +56,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -94,6 +95,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CaserConfigUserControl.xaml.cs">
+      <DependentUpon>CaserConfigUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="File.cs" />
     <Compile Include="IReturnValue.cs" />
     <Compile Include="RemoverConfigUserControl.xaml.cs">
@@ -111,8 +115,12 @@
       <DependentUpon>ConfigDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="StringTrimer.cs" />
-    <Compile Include="StringUppercaseArg.cs" />
+    <Compile Include="StringCaseArg.cs" />
     <Compile Include="StringUpperCaser.cs" />
+    <Page Include="CaserConfigUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

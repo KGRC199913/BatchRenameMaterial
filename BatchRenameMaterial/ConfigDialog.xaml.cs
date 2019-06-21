@@ -17,7 +17,9 @@ namespace BatchRenameMaterial
     public enum DialogType
     {
         ReplacerConfigDialog,
-        RemoverConfigDialog
+        RemoverConfigDialog,
+        UpperCaserConfigDialog,
+        LowerCaserConfigDialog
     }
 
     /// <summary>
@@ -35,6 +37,9 @@ namespace BatchRenameMaterial
                     return new ReplacerConfigUserControl();
                 case DialogType.RemoverConfigDialog:
                     return new RemoverConfigUserControl();
+                case DialogType.UpperCaserConfigDialog:
+                case DialogType.LowerCaserConfigDialog:
+                    return new CaserConfigUserControl();
                 default:
                     return null;
             }

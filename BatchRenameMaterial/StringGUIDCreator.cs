@@ -12,7 +12,7 @@ namespace BatchRenameMaterial
     [Serializable]
     class StringGUIDCreator : IStringProcessor
     {
-        public string Decription
+        public string Description
             => $"Create GUID for a string inputed.";
 
          /// <summary>

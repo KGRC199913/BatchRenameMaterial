@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BatchRenameMaterial
@@ -10,9 +12,9 @@ namespace BatchRenameMaterial
     /// Name Normalizer/
     /// </summary>
     [Serializable]
-    class StringNameNormalizer : IstringProcessor
+    class StringNameNormalizer : IStringProcessor
     {
-        public string Decription 
+        public string Description 
             => $"Fullname normalize.";
         
         ///<summary>
@@ -30,6 +32,8 @@ namespace BatchRenameMaterial
             result = Regex.Replace(result, @"\s+", " ");
 
             result = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.ToLower());
+
+            return result;
         }
     }
 }

@@ -28,24 +28,6 @@ namespace BatchRenameMaterial
             this.rulesListView.DataContext = processors;
             this.fileCountStackPanel.DataContext = files;
             SetStateRulePositionControl(false);
-
-            // TEST AREA
-            //TO BE DELETE
-            files.Add(
-                new File()
-                {
-                    Name = "   Test    file .jpeg",
-                    Path = "C:/FAKE",
-                    IsFile = true
-                });
-            files.Add(
-                new File()
-                {
-                    Name = "Test_file01",
-                    Path = "C:/FAKE",
-                    IsFile = true
-                });
-            //
         }
 
         /// <summary>
@@ -111,8 +93,8 @@ namespace BatchRenameMaterial
 
         private void LoadRulesButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: create a dialog to get name/location
-            //TODO: get preset name/location from user (save to loadLoc)
+            //create a dialog to get name/location
+            //get preset name/location from user (save to loadLoc)
             string loadLoc = "./test.preset";
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -160,13 +142,15 @@ namespace BatchRenameMaterial
 
         private void AddRuleButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: let user choose type
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
 
             //TODO: Add config dialog
-            DialogType type = DialogType.TrimerConfigDialog;
+            processorType = ProcessorType.StringGUIDCreator;
+            DialogType type = DialogType.NoDialog;
             object arg = null;
 
-            if (type != DialogType.TrimerConfigDialog)
+            if (type != DialogType.NoDialog)
             {
                 ConfigDialog cfDialog = new ConfigDialog(type);
                 if (cfDialog.ShowDialog() == true)
@@ -178,12 +162,6 @@ namespace BatchRenameMaterial
                     return;
                 }
             }
-            else
-            {
-                processors.Add(
-                    new StringTrimer());
-                return;
-            }
             // set type and arg base on user input
 
             //TODO: get Args and rule type
@@ -192,31 +170,40 @@ namespace BatchRenameMaterial
             IStringProcessor processor = null;
 
             // Create correct type of string processor
-            switch (type)
+            switch (processorType)
             {
-                case DialogType.ReplacerConfigDialog: // 0 is String regex replacer // SUBJECT OT BE CHANGED
+                case ProcessorType.StringReplacer: // 0 is String regex replacer // SUBJECT OT BE CHANGED
                     processor = new StringReplacer()
                     {
                         Arg = arg as StringReplaceArg
                     };
                     break;
-                case DialogType.RemoverConfigDialog:
+                case ProcessorType.StringRemover:
                     processor = new StringRemover()
                     {
                         Arg = arg as StringRemoveArg
                     };
                     break;
-                case DialogType.UpperCaserConfigDialog:
+                case ProcessorType.StringUpperCaser:
                     processor = new StringUpperCaser()
                     {
                         Arg = arg as StringCaseArg
                     };
                     break;
-                case DialogType.LowerCaserConfigDialog:
+                case ProcessorType.StringLowerCaser:
                     processor = new StringLowerCaser()
                     {
                         Arg = arg as StringCaseArg
                     };
+                    break;
+                case ProcessorType.StringTrimer:
+                    processor = new StringTrimer();
+                    break;
+                case ProcessorType.StringNameNormalizer:
+                    processor = new StringNameNormalizer();
+                    break;
+                case ProcessorType.StringGUIDCreator:
+                    processor = new StringGUIDCreator();
                     break;
                 default:
                     break;
@@ -326,11 +313,14 @@ namespace BatchRenameMaterial
                 {
                     newfile = new File()
                     {
-                        Name = System.IO.Path.GetFileName(fileFullName),
+                        Name = System.IO.Path.GetFileNameWithoutExtension(fileFullName),
+                        Extension = System.IO.Path.GetExtension(fileFullName),
                         Path = System.IO.Path.GetDirectoryName(fileFullName),
                         IsFile = true
                     };
-                    if (files.Contains(newfile)) continue;
+
+                    if (files.Contains(newfile))
+                        continue;
                     files.Add(newfile);
                 }
             }

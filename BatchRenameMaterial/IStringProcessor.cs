@@ -23,4 +23,16 @@ namespace BatchRenameMaterial
         string Process(string haystack);
         string Description { get; }
     }
+
+    enum ProcessorType
+    {
+        Null,
+        StringReplacer,
+        StringRemover,
+        StringTrimer,
+        StringUpperCaser,
+        StringLowerCaser,
+        StringNameNormalizer,
+        StringGUIDCreator
+    }
 }

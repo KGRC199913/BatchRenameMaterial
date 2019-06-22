@@ -106,7 +106,9 @@
     <Compile Include="ReplacerConfigUserControl.xaml.cs">
       <DependentUpon>ReplacerConfigUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringGUIDCreator.cs" />
     <Compile Include="StringLowerCaser.cs" />
+    <Compile Include="StringNameNormalizer.cs" />
     <Compile Include="StringRemoveArg.cs" />
     <Compile Include="StringRemover.cs" />
     <Compile Include="StringReplaceArg.cs" />

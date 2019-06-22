@@ -12,8 +12,8 @@ namespace BatchRenameMaterial
     [Serializable]
     class StringGUIDCreator : IStringProcessor
     {
-        public string Decription
-            => $"Create GUID for a string inputed.";
+        public string Description
+            => $"Create unique GUID for name";
 
          /// <summary>
         ///      Create GUID for a string inputed..

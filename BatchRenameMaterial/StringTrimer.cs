@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BatchRenameMaterial
@@ -25,7 +26,10 @@ namespace BatchRenameMaterial
         ///    A modified string.
         /// </returns>
         public string Process(string haystack)
-            => haystack.Trim();
-
+        {
+            var result = haystack.Trim();
+            result = Regex.Replace(result, @"\s+", " ");
+            return result;
+        }
     }
 }

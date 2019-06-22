@@ -34,7 +34,7 @@ namespace BatchRenameMaterial
             files.Add(
                 new File()
                 {
-                    Name = "Test_file",
+                    Name = "   Test    file .jpeg",
                     Path = "C:/FAKE",
                     IsFile = true
                 });
@@ -45,27 +45,6 @@ namespace BatchRenameMaterial
                     Path = "C:/FAKE",
                     IsFile = true
                 });
-            processors.Add(
-                new StringReplacer()
-                {
-                    Arg = new StringReplaceArg()
-                    {
-                        ReplacePattern = @"test",
-                        ReplaceTarget = "meow",
-                        IgnoreCase = true
-                    }
-                });
-            processors.Add(
-                new StringReplacer()
-                {
-                    Arg = new StringReplaceArg()
-                    {
-                        ReplacePattern = @"file",
-                        ReplaceTarget = "f",
-                        IgnoreCase = false
-                    }
-                });
-
             //
         }
 
@@ -159,16 +138,25 @@ namespace BatchRenameMaterial
             //TODO: let user choose type
 
             //TODO: Add config dialog
-            DialogType type = DialogType.LowerCaserConfigDialog;
+            DialogType type = DialogType.TrimerConfigDialog;
             object arg = null;
 
-            ConfigDialog cfDialog = new ConfigDialog(type);
-            if (cfDialog.ShowDialog() == true)
+            if (type != DialogType.TrimerConfigDialog)
             {
-                arg = cfDialog.ArgReturn;
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
             }
             else
             {
+                processors.Add(
+                    new StringTrimer());
                 return;
             }
             // set type and arg base on user input

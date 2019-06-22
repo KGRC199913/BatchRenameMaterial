@@ -16,6 +16,7 @@ namespace BatchRenameMaterial
 {
     public enum DialogType
     {
+        TrimerConfigDialog,
         ReplacerConfigDialog,
         RemoverConfigDialog,
         UpperCaserConfigDialog,

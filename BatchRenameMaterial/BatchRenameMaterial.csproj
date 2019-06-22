@@ -106,9 +106,13 @@
     <Compile Include="ReplacerConfigUserControl.xaml.cs">
       <DependentUpon>ReplacerConfigUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringCasingArg.cs" />
     <Compile Include="StringGUIDCreator.cs" />
     <Compile Include="StringLowerCaser.cs" />
     <Compile Include="StringNameNormalizer.cs" />
+    <Compile Include="StringRegexCaseArg.cs" />
+    <Compile Include="StringRegexLowercaser.cs" />
+    <Compile Include="StringRegexUppercaser.cs" />
     <Compile Include="StringRemoveArg.cs" />
     <Compile Include="StringRemover.cs" />
     <Compile Include="StringReplaceArg.cs" />
@@ -116,6 +120,7 @@
     <Compile Include="ConfigDialog.xaml.cs">
       <DependentUpon>ConfigDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringTrim.cs" />
     <Compile Include="StringTrimer.cs" />
     <Compile Include="StringCaseArg.cs" />
     <Compile Include="StringUpperCaser.cs" />

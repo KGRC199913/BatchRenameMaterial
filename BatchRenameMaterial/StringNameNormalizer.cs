@@ -30,7 +30,6 @@ namespace BatchRenameMaterial
         {
             var result = haystack.Trim(); 
             result = Regex.Replace(result, @"\s+", " ");
-
             result = Regex.Replace(result, "\b[a-z]", m => m.Value.ToUpper());
 
             return result;

@@ -14,7 +14,6 @@ namespace BatchRenameMaterial
     {
         public string Description
             => $"Create unique GUID for name";
-
          /// <summary>
         ///      Create GUID for a string inputed..
         /// </summary>

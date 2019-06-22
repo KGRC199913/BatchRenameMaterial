@@ -18,7 +18,7 @@ namespace BatchRenameMaterial
             => $"Fullname normalize.";
         
         ///<summary>
-        ///      Normalize the name (string).
+        ///      Normalize the name (string). Applied only to name rule that have ONLY the first character of each words capitalized.
         /// </summary>
         /// <param name="haystack">
         ///     String to be modified.
@@ -30,8 +30,7 @@ namespace BatchRenameMaterial
         {
             var result = haystack.Trim(); 
             result = Regex.Replace(result, @"\s+", " ");
-
-            result = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.ToLower());
+            result = Regex.Replace(result, "\b[a-z]", m => m.Value.ToUpper());
 
             return result;
         }

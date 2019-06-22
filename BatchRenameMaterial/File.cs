@@ -10,6 +10,7 @@ namespace BatchRenameMaterial
     class File : INotifyPropertyChanged
     {
         private string name;
+        private string extension;
         private string newName;
         private string path;
         private string error;
@@ -54,6 +55,15 @@ namespace BatchRenameMaterial
             {
                 isFile = value;
                 OnPropertyChanged("IsFile");
+            }
+        }
+
+        public string Extension {
+            get => extension;
+            set
+            {
+                extension = value;
+                OnPropertyChanged("Extension");
             }
         }
 

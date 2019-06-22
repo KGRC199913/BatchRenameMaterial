@@ -13,8 +13,7 @@ namespace BatchRenameMaterial
     class StringGUIDCreator : IStringProcessor
     {
         public string Description
-            => $"Create GUID for a string inputed.";
-
+            => $"Create unique GUID for name";
          /// <summary>
         ///      Create GUID for a string inputed..
         /// </summary>

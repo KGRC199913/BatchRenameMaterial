@@ -73,8 +73,19 @@ namespace BatchRenameMaterial
         private void SaveRulesButton_Click(object sender, RoutedEventArgs e)
         {
             //TODO: create a dialog to get name/location
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Preset file (*.preset)| *.preset";
+            saveFileDialog.DefaultExt = "*.preset";
+            saveFileDialog.OverwritePrompt = true;
+
             //TODO: get preset name/location from user (save to saveLoc)
             string saveLoc = "./test.preset";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                saveLoc = saveFileDialog.FileName;
+            }
+
             // Serialize processors
             IFormatter formatter = new BinaryFormatter();
             Stream fstream = null;
@@ -86,6 +97,7 @@ namespace BatchRenameMaterial
             {
                 // Preset is already exist
                 //TODO: ask user to re-enter new preset name/location OR ask user to override
+                fstream = new FileStream(saveLoc, FileMode.Create, FileAccess.Write);
             }
 
             if (fstream != null)
@@ -93,6 +105,7 @@ namespace BatchRenameMaterial
             else
             {
                 //TODO: announce saving preset failure to user
+                MessageBox.Show("Save preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -101,6 +114,16 @@ namespace BatchRenameMaterial
             //TODO: create a dialog to get name/location
             //TODO: get preset name/location from user (save to loadLoc)
             string loadLoc = "./test.preset";
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Preset file (*.preset)| *.preset";
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                loadLoc = openFileDialog.FileName;
+            }
+            
             //Deserialize processors
             IFormatter formatter = new BinaryFormatter();
             Stream fstream = null;
@@ -112,6 +135,7 @@ namespace BatchRenameMaterial
             {
                 // Preset is not exist
                 // TODO: ask user to re-enter preset name/location
+
             }
 
             if (fstream != null)
@@ -121,6 +145,7 @@ namespace BatchRenameMaterial
             else
             {
                 //TODO: annound loading preset failure to user
+                MessageBox.Show("Load preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 

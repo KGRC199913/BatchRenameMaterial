@@ -12,12 +12,14 @@ namespace BatchRenameMaterial
     [Serializable]
     class StringLowerCaser : IStringProcessor
     {
+
         private StringCaseArg lowercaseRule;
 
         public StringCaseArg Arg {get => lowercaseRule; set=> lowercaseRule = value; }
 
         public string Description
             => $"Lowercase from {lowercaseRule.StartIndex + 1} to {lowercaseRule.EndIndex + 1}";
+
 
         /// <summary>
         ///      Lowercasing from x to y in a string.
@@ -30,6 +32,7 @@ namespace BatchRenameMaterial
         /// </returns>
         public string Process(string haystack)
         {
+
             if (lowercaseRule.EndIndex >= haystack.Length)
                 lowercaseRule.EndIndex = haystack.Length -1;
             var result = new StringBuilder(haystack.Substring(0, lowercaseRule.StartIndex))

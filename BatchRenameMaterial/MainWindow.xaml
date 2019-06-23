@@ -290,7 +290,7 @@
                 Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
                 PlacementMode="TopAndAlignRightEdges"
                 UnfurlOrientation="Vertical"
-                ToolTip="Manage items"
+                ToolTip="Add Rule"
                 Margin="0 0 10 7"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom" Height="46" Width="46" 

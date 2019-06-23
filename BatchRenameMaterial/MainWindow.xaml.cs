@@ -264,13 +264,13 @@ namespace BatchRenameMaterial
                 case ProcessorType.StringGUIDCreator:
                     processor = new StringGUIDCreator();
                     break;
-                case ProcessorType.StringRegexUpperCaser:
+                case ProcessorType.StringRegexUppercaser:
                     processor = new StringRegexUppercaser()
                     {
                         Arg = arg as StringRegexCaseArg
                     };
                     break;
-                case ProcessorType.StringRegexLowerCaser:
+                case ProcessorType.StringRegexLowercaser:
                     processor = new StringRegexLowercaser()
                     {
                         Arg = arg as StringRegexCaseArg

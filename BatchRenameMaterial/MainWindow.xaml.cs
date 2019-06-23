@@ -50,6 +50,7 @@ namespace BatchRenameMaterial
         {
             UpdateNewName();
             // TODO: Add file rename
+            
         }
 
         private void SaveRulesButton_Click(object sender, RoutedEventArgs e)
@@ -105,7 +106,7 @@ namespace BatchRenameMaterial
             {
                 loadLoc = openFileDialog.FileName;
             }
-            
+
             //Deserialize processors
             IFormatter formatter = new BinaryFormatter();
             Stream fstream = null;
@@ -127,7 +128,7 @@ namespace BatchRenameMaterial
             else
             {
                 //TODO: annound loading preset failure to user
-                MessageBox.Show("Load preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error); 
+                MessageBox.Show("Load preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -436,6 +437,272 @@ namespace BatchRenameMaterial
             files.Remove(item);
             files.Add(item);
             filesDataGrid.SelectedIndex = files.Count - 1;
+        }
+
+        private void addCard(ProcessorType processorType, object arg)
+        {
+            // set type and arg base on user input
+
+            //TODO: get Args and rule type
+            //TODO: Create an Enum for types
+
+            IStringProcessor processor = null;
+
+            // Create correct type of string processor
+            switch (processorType)
+            {
+                case ProcessorType.StringReplacer: // 0 is String regex replacer // SUBJECT OT BE CHANGED
+                    processor = new StringReplacer()
+                    {
+                        Arg = arg as StringReplaceArg
+                    };
+                    break;
+                case ProcessorType.StringRemover:
+                    processor = new StringRemover()
+                    {
+                        Arg = arg as StringRemoveArg
+                    };
+                    break;
+                case ProcessorType.StringUpperCaser:
+                    processor = new StringUpperCaser()
+                    {
+                        Arg = arg as StringCaseArg
+                    };
+                    break;
+                case ProcessorType.StringLowerCaser:
+                    processor = new StringLowerCaser()
+                    {
+                        Arg = arg as StringCaseArg
+                    };
+                    break;
+                case ProcessorType.StringRegexLowercaser:
+                    processor =new StringRegexLowercaser()
+                    {
+                        Arg = arg as StringRegexCaseArg
+                    };
+                    break;
+                case ProcessorType.StringRegexUppercaser:
+                    processor = new StringRegexUppercaser()
+                    {
+                        Arg = arg as StringRegexCaseArg
+                    };
+                    break;
+                case ProcessorType.StringTrimer:
+                    processor = new StringTrimer();
+                    break;
+                case ProcessorType.StringNameNormalizer:
+                    processor = new StringNameNormalizer();
+                    break;
+                case ProcessorType.StringGUIDCreator:
+                    processor = new StringGUIDCreator();
+                    break;
+                default:
+                    break;
+            }
+
+            processors.Add(processor);
+        }
+
+        private void CreateGUID_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringGUIDCreator;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            addCard(processorType, arg);
+        }
+
+        private void Uppercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringUpperCaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            addCard(processorType, arg);
+        }
+
+        private void Trim_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringTrimer;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            addCard(processorType, arg);
+        }
+
+        private void RegexUppercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringRegexUppercaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            addCard(processorType, arg);
+        }
+
+        private void Lowercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringLowerCaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            addCard(processorType, arg);
+        }
+
+        private void RegexLowercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringRegexLowercaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            addCard(processorType, arg);
+        }
+
+        private void NameNormalize_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringNameNormalizer;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            addCard(processorType, arg);
+        }
+
+
+
+
+        private void PopupBox_addRule_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Border_BlurWhenPopupBoxEnter.Opacity = 0.85;
+
+            Border_BlurWhenPopupBoxEnter.IsHitTestVisible = true;
+
+
+        }
+
+        private void PopupBox_addRule_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Border_BlurWhenPopupBoxEnter.Opacity = 0;
+
+            Border_BlurWhenPopupBoxEnter.IsHitTestVisible = false;
+
         }
     }
 }

@@ -14,7 +14,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         x:Name="FrontWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1200" MinHeight="600" MinWidth="1000">
+        Title="Batch Rename" Height="600" Width="1200" MinHeight="600" MinWidth="1000">
     <Window.Resources>
         <DataTemplate x:Key="ruleCard">
             <materialDesign:Card>
@@ -76,19 +76,19 @@
                     Grid.Row="0"
                     Grid.RowSpan="9"
                     BorderBrush="Black"
-                    BorderThickness="0, 1, 1, 0"/>
+                    BorderThickness="0, 1, 1, 0" IsHitTestVisible="False"/>
             <Border Grid.Column="2"
                     Grid.ColumnSpan="3"
                     Grid.Row="0"
                     Grid.RowSpan="9"
                     BorderBrush="Black"
-                    BorderThickness="0, 1, 0, 0"/>
+                    BorderThickness="0, 1, 0, 0" IsHitTestVisible="False"/>
             <StackPanel Grid.Column="0" 
                         Grid.ColumnSpan="2"
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Margin="0, 0, 1, 0">
-                <Menu>
+                <Menu >
                     <Button Name="startRenameButton" Width="60" Click="StartRenameButton_Click"
                                 ToolTip="Start batch">
                         <materialDesign:PackIcon Kind="Play"/>
@@ -143,6 +143,9 @@
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
+
+    
+            
             <Menu
                 Grid.Column="2"
                 Grid.ColumnSpan="3"
@@ -243,6 +246,97 @@
                 <ProgressBar Name="fileCountProgressBar" Minimum="0" Maximum="1000" Value="{Binding Count, Mode=OneWay}" Margin="20, 10, 20, 0"/>
                 <Label Content="{Binding Count, Mode=OneWay}" ContentStringFormat="File count: {0}/1000" Height="25" Margin="20, 5, 20, 0"/>
             </StackPanel>
+            
+            
+            <Border Name="Border_BlurWhenPopupBoxEnter"
+                Grid.Row="0" Grid.RowSpan="9"
+                Grid.Column="0" Grid.ColumnSpan="5" 
+                Background="{DynamicResource MaterialDesignPaper}" Opacity="0" IsHitTestVisible="False"/>    <!-- This was setted by PopupBox Mouse Enter-->
+
+            <materialDesign:PopupBox Name="PopupBox_addRule"
+                Grid.Row="8"
+                Grid.Column="1"
+                Grid.RowSpan="1"
+                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                PlacementMode="TopAndAlignRightEdges"
+                UnfurlOrientation="Vertical"
+                ToolTip="Manage items"
+                Margin="0 0 10 7"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom" Height="46" Width="46" 
+                MouseEnter="PopupBox_addRule_MouseEnter" MouseLeave="PopupBox_addRule_MouseLeave"
+                PopupMode="MouseOver">
+
+                <StackPanel Name="allPopupButton_StackPanel"
+                  Orientation="Vertical">
+                    
+                    <StackPanel Name ="CreateGUID_StackPanel" Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
+                        <RepeatButton Name="Desc_GUID" Content="Create GUID Name" Margin="0,0,10,0" 
+                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <Button Name="CreateGUID_Button"
+                            Click="CreateGUID_Button_Click" >
+                            <materialDesign:PackIcon Kind="Hashtag" />
+                        </Button>
+                    </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
+                            <RepeatButton Name="Desc_Uppercase" Content="Uppercase" Margin="0,0,10,0" 
+                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
+                            <Button Name="Uppercase_Button"
+                            Click="Uppercase_Button_Click" >
+                                <materialDesign:PackIcon Kind="FormatLetterCaseUpper" />
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
+                            <RepeatButton Name="Desc_Lowercase" Content="Lowercase" Margin="0,0,10,0" 
+                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
+                            <Button Name="Lowercase_Button"
+                            Click="Lowercase_Button_Click" >
+                                <materialDesign:PackIcon Kind="FormatLetterCaseLower" />
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
+                            <RepeatButton Name="Desc_Trim" Content="Trim string" Margin="0,0,10,0" 
+                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <Button Name="Trim_Button" ToolTip="Remove all leading + trailing white space"
+                            Click="Trim_Button_Click" >
+                                <materialDesign:PackIcon Kind="ContentCut" />
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
+                            <RepeatButton Name="Desc_RegexUppercase" Content="Regex Uppercase" Margin="0,0,10,0" 
+                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <Button Name="RegexUppercase_Button" ToolTip="Uppercase All token match the regex"
+                            Click="RegexUppercase_Button_Click" >
+                                <Image Source="icon/regexUpper_icon.png" Height="25" Width="25"/>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
+                            <RepeatButton Name="Desc_RegexLowrecase" Content="Regex Lowercase" Margin="0,0,10,0" 
+                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <Button Name="RegexLowercase_Button" ToolTip="Lowercase All token match the regex"
+                            Click="RegexLowercase_Button_Click" >
+                                <Image Source="icon/regexLower_icon.png" Height="25" Width="25"/>
+                            </Button>
+                        </StackPanel>
+
+
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
+                            <RepeatButton Name="Desc_NameNormalize" Content="Name normalize" Margin="0,0,10,0" 
+                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
+                            <Button Name="NameNormalize_Button"
+                            Click="NameNormalize_Button_Click" >
+                                <materialDesign:PackIcon Kind="RenameBox" />
+                            </Button>
+                        </StackPanel>
+                </StackPanel>
+            </materialDesign:PopupBox>
+            
         </Grid>
     </DockPanel>
+    
 </Window>

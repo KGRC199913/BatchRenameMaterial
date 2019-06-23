@@ -15,6 +15,7 @@ namespace BatchRenameMaterial
         private string path;
         private string error;
         private Boolean isFile;
+        private int duplicateCount;
 
         public string Name
         {
@@ -67,10 +68,19 @@ namespace BatchRenameMaterial
             }
         }
 
+        public int DuplicateCount { get => duplicateCount; set => duplicateCount = value; }
+
         public override bool Equals(object obj)
         {
             File newfile = (File)obj;
             return name == newfile.name && path == newfile.path && isFile == newfile.isFile;
+        }
+
+        public string getNewFullName()
+        {
+            if (duplicateCount != 0)
+                return path + "\\" + newName + "(" + duplicateCount.ToString() + ")" + extension;
+            return path + "\\" + newName + extension;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

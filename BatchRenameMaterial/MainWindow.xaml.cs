@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BatchRenameMaterial
 {
@@ -19,6 +20,12 @@ namespace BatchRenameMaterial
     {
         ObservableCollection<File> files = new ObservableCollection<File>();
         BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
+        enum DuplicateResolveType
+        {
+            KeepOldName,
+            AddNumber
+        };
+        DuplicateResolveType resolveType;
 
         public MainWindow()
         {
@@ -35,6 +42,8 @@ namespace BatchRenameMaterial
         /// </summary>
         private void UpdateNewName()
         {
+            string tmpNewName;
+            HashSet<String> fullNameList = new HashSet<string>();
             foreach (var file in files)
             {
                 file.NewName = file.Name;
@@ -42,15 +51,64 @@ namespace BatchRenameMaterial
                 {
                     file.NewName = processor.Process(file.NewName);
                 }
+
+                if (!fullNameList.Contains(file.getNewFullName()))
+                {
+                    fullNameList.Add(file.getNewFullName());
+                }
+                else
+                {
+                    //option 1: keep old name
+                    if (resolveType == DuplicateResolveType.KeepOldName)
+                    {
+                        file.NewName = Name;
+                    }
+                    else
+                    {
+                        //option 2: add number
+                        while (fullNameList.Contains(file.getNewFullName()))
+                            ++file.DuplicateCount;
+                    }
+                }
+
+                if (file.NewName == "")
+                {
+                    file.Error = "New name is null";
+                }
             };
         }
 
         // SUBJECT TO BE CHANGED
         private void StartRenameButton_Click(object sender, RoutedEventArgs e)
         {
+            files.AsParallel().ForAll(i =>
+            {
+                if (System.IO.File.Exists(i.getNewFullName()))
+                {
+                    if (resolveType == DuplicateResolveType.KeepOldName)
+                    {
+                        i.NewName = i.Name;
+                    }
+                    else
+                    {
+                        while (System.IO.File.Exists(i.getNewFullName()))
+                            ++i.DuplicateCount;
+                    }
+                }
+                try
+                {
+                    System.IO.File.Move(i.Path + "\\" + i.Name + i.Extension, i.getNewFullName());
+                }
+                catch (Exception ex)
+                {
+                    i.Error = ex.Message;
+                    i.NewName = i.Name;
+                }
+                i.Name = i.NewName;
+            });
+
             UpdateNewName();
-            // TODO: Add file rename
-            
+
         }
 
         private void SaveRulesButton_Click(object sender, RoutedEventArgs e)
@@ -147,8 +205,8 @@ namespace BatchRenameMaterial
             ProcessorType processorType;
 
             //TODO: Add config dialog
-            processorType = ProcessorType.StringGUIDCreator;
-            DialogType type = DialogType.NoDialog;
+            processorType = ProcessorType.StringRemover;
+            DialogType type = DialogType.RemoverConfigDialog;
             object arg = null;
 
             if (type != DialogType.NoDialog)
@@ -173,7 +231,7 @@ namespace BatchRenameMaterial
             // Create correct type of string processor
             switch (processorType)
             {
-                case ProcessorType.StringReplacer: // 0 is String regex replacer // SUBJECT OT BE CHANGED
+                case ProcessorType.StringReplacer:
                     processor = new StringReplacer()
                     {
                         Arg = arg as StringReplaceArg
@@ -206,11 +264,24 @@ namespace BatchRenameMaterial
                 case ProcessorType.StringGUIDCreator:
                     processor = new StringGUIDCreator();
                     break;
-                default:
+                case ProcessorType.StringRegexUpperCaser:
+                    processor = new StringRegexUppercaser()
+                    {
+                        Arg = arg as StringRegexCaseArg
+                    };
                     break;
+                case ProcessorType.StringRegexLowerCaser:
+                    processor = new StringRegexLowercaser()
+                    {
+                        Arg = arg as StringRegexCaseArg
+                    };
+                    break;
+                default:
+                    return;
             }
 
             processors.Add(processor);
+            UpdateNewName();
         }
 
 
@@ -247,13 +318,12 @@ namespace BatchRenameMaterial
             {
                 ruleDownMostButton.IsEnabled = ruleDownButton.IsEnabled = false;
             }
-            else
+
+            if (rulesListView.SelectedIndex == 0)
             {
-                if (rulesListView.SelectedIndex == 0)
-                {
-                    ruleUpMostButton.IsEnabled = ruleUpButton.IsEnabled = false;
-                }
+                ruleUpMostButton.IsEnabled = ruleUpButton.IsEnabled = false;
             }
+
         }
 
         /// <summary>
@@ -329,6 +399,8 @@ namespace BatchRenameMaterial
             {
                 return;
             }
+
+            UpdateNewName();
         }
 
         private void AddFoldersButton_Click(object sender, RoutedEventArgs e)
@@ -361,6 +433,8 @@ namespace BatchRenameMaterial
             {
                 return;
             }
+
+            UpdateNewName();
         }
 
         private void IsDarkModeToggleButton_Checked(object sender, RoutedEventArgs e)

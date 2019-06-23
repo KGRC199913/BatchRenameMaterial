@@ -22,7 +22,7 @@
                 Start Index:
                 </TextBlock>
             </Label>
-            <xctk:IntegerUpDown Name="startIndexIntergerUpDown" Margin="148, 0, 0, 0" Value="{Binding StartIndex}"/>
+            <xctk:IntegerUpDown Name="startIndexIntergerUpDown" Margin="148, 0, 0, 0" Value="{Binding StartIndex}" Minimum="0"/>
         </StackPanel>
         <StackPanel Margin="10" Orientation="Horizontal">
             <Label>
@@ -30,7 +30,7 @@
                 Number of character to be remove:
                 </TextBlock>
             </Label>
-            <xctk:IntegerUpDown Name="numberOfRemoveCharIntergerUpDown" Margin="10, 0, 0, 0" Value="{Binding CharNumToDel}"/>
+            <xctk:IntegerUpDown Name="numberOfRemoveCharIntergerUpDown" Margin="10, 0, 0, 0" Value="{Binding CharNumToDel}" Minimum="0"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

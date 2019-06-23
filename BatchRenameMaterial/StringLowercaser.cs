@@ -18,7 +18,7 @@ namespace BatchRenameMaterial
         public StringCaseArg Arg {get => lowercaseRule; set=> lowercaseRule = value; }
 
         public string Description
-            => $"Lowercase from {lowercaseRule.StartIndex + 1} to {lowercaseRule.EndIndex + 1}";
+            => $"Lowercase from {lowercaseRule.StartIndex} to {lowercaseRule.EndIndex}";
 
 
         /// <summary>
@@ -32,12 +32,12 @@ namespace BatchRenameMaterial
         /// </returns>
         public string Process(string haystack)
         {
-
-            if (lowercaseRule.EndIndex >= haystack.Length)
-                lowercaseRule.EndIndex = haystack.Length -1;
+            var endIndex = lowercaseRule.EndIndex;
+            if (endIndex >= haystack.Length)
+                endIndex = haystack.Length -1;
             var result = new StringBuilder(haystack.Substring(0, lowercaseRule.StartIndex))
-                            .Append(haystack.Substring(lowercaseRule.StartIndex, lowercaseRule.EndIndex - lowercaseRule.StartIndex + 1).ToLower())
-                            .Append(haystack.Substring(lowercaseRule.EndIndex + 1, haystack.Length - lowercaseRule.EndIndex - 1))
+                            .Append(haystack.Substring(lowercaseRule.StartIndex, endIndex - lowercaseRule.StartIndex + 1).ToLower())
+                            .Append(haystack.Substring(endIndex + 1, haystack.Length - endIndex - 1))
                             .ToString();
             return result;
         }

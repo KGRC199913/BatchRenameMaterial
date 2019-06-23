@@ -14,7 +14,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         x:Name="FrontWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1200" MinHeight="600" MinWidth="1000">
+        Title="Batch Rename" Height="600" Width="1200" MinHeight="600" MinWidth="1000">
     <Window.Resources>
         <DataTemplate x:Key="ruleCard">
             <materialDesign:Card>

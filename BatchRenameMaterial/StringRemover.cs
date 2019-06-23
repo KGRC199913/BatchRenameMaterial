@@ -33,7 +33,13 @@ namespace BatchRenameMaterial
         { 
             if (removeRule == null)
                 return haystack;
-            var result = haystack.Remove(removeRule.StartIndex, removeRule.CharNumToDel);
+
+            var startIndex = removeRule.StartIndex;
+            var delCount = removeRule.CharNumToDel;
+            if (delCount + startIndex - 1 >= haystack.Length)
+                delCount = haystack.Length - startIndex;
+
+            var result = haystack.Remove(startIndex, delCount);
             return result;
         }
     }

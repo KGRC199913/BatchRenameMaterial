@@ -100,13 +100,15 @@
     </Compile>
     <Compile Include="File.cs" />
     <Compile Include="IReturnValue.cs" />
+    <Compile Include="RegexCaseConfigUserControl.xaml.cs">
+      <DependentUpon>RegexCaseConfigUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RemoverConfigUserControl.xaml.cs">
       <DependentUpon>RemoverConfigUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ReplacerConfigUserControl.xaml.cs">
       <DependentUpon>ReplacerConfigUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringCasingArg.cs" />
     <Compile Include="StringGUIDCreator.cs" />
     <Compile Include="StringLowerCaser.cs" />
     <Compile Include="StringNameNormalizer.cs" />
@@ -142,6 +144,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ConfigDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RegexCaseConfigUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -37,7 +37,9 @@ namespace BatchRenameMaterial
                 upperCaseRule.IgnoreCase = true;  //
 
             var regexOps = upperCaseRule.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None;
-            var result = Regex.Replace(haystack, upperCaseRule.RegexPattern, upperCaseRule.RegexPattern.ToUpper(), regexOps);
+            var result = Regex.Replace(haystack, upperCaseRule.RegexPattern, 
+                m => m.Value.ToUpper(),
+                regexOps);
             return result;
         }
     }

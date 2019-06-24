@@ -19,13 +19,90 @@ namespace BatchRenameMaterial
     public partial class MainWindow : Window
     {
         ObservableCollection<File> files = new ObservableCollection<File>();
-        BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
+        public static BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
+        BindingList<ProcessorViewModel> processorWrapers = new BindingList<ProcessorViewModel>()
+        {
+            new ProcessorViewModel()
+            {
+                IconKind = "Hashtag",
+                ProcessorName = "Create GUID name",
+                Commander = Adder,
+                PType = ProcessorType.StringGUIDCreator
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "FormatLetterCaseUpper",
+                ProcessorName = "Non-regex Uppercaser",
+                Commander = Adder,
+                PType = ProcessorType.StringUpperCaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "FormatLetterCaseLower",
+                ProcessorName = "Non-regex Lowercaser",
+                Commander = Adder,
+                PType = ProcessorType.StringLowerCaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "ContentCut",
+                ProcessorName = "Trim",
+                Commander = Adder,
+                PType = ProcessorType.StringTrimer
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "FormatSize",
+                ProcessorName = "Regex Uppercase",
+                Commander = Adder,
+                PType = ProcessorType.StringRegexUppercaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "TextShadow",
+                ProcessorName = "Regex Lowercase",
+                Commander = Adder,
+                PType = ProcessorType.StringRegexLowercaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "RenameBox",
+                ProcessorName = "Name Normalize",
+                Commander = Adder,
+                PType = ProcessorType.StringNameNormalizer
+            }
+        };
+        static ProcessorAdder Adder = new ProcessorAdder();
+
         enum DuplicateResolveType
         {
             KeepOldName,
             AddNumber
         };
         DuplicateResolveType resolveType;
+
+        public static DialogType GetDialogTypeFromProcessorType(ProcessorType type)
+        { 
+            switch (type)
+            {
+                case ProcessorType.StringNameNormalizer:
+                case ProcessorType.StringTrimer:
+                case ProcessorType.StringGUIDCreator:
+                    return DialogType.NoDialog;
+                case ProcessorType.StringLowerCaser:
+                case ProcessorType.StringUpperCaser:
+                    return DialogType.CaseConfigDialog;
+                case ProcessorType.StringRegexLowercaser:
+                case ProcessorType.StringRegexUppercaser:
+                    return DialogType.RegexCaseConfigDialog;
+                case ProcessorType.StringRemover:
+                    return DialogType.RemoverConfigDialog;
+                case ProcessorType.StringReplacer:
+                    return DialogType.ReplacerConfigDialog;
+                default:
+                    return DialogType.NoDialog;
+            }
+}
 
         public MainWindow()
         {
@@ -34,6 +111,8 @@ namespace BatchRenameMaterial
             this.filesDataGrid.DataContext = files;
             this.rulesListView.DataContext = processors;
             this.fileCountStackPanel.DataContext = files;
+            this.ProcessorsHolderItemsControl.DataContext = processorWrapers;
+
             SetStateRulePositionControl(false);
         }
 
@@ -513,7 +592,7 @@ namespace BatchRenameMaterial
             filesDataGrid.SelectedIndex = files.Count - 1;
         }
 
-        private void addCard(ProcessorType processorType, object arg)
+        public static void AddCard(ProcessorType processorType, object arg)
         {
             // set type and arg base on user input
 
@@ -600,7 +679,7 @@ namespace BatchRenameMaterial
                 }
             }
 
-            addCard(processorType, arg);
+            AddCard(processorType, arg);
         }
 
         private void Uppercase_Button_Click(object sender, RoutedEventArgs e)
@@ -626,7 +705,7 @@ namespace BatchRenameMaterial
                 }
             }
 
-            addCard(processorType, arg);
+            AddCard(processorType, arg);
         }
 
         private void Trim_Button_Click(object sender, RoutedEventArgs e)
@@ -652,7 +731,7 @@ namespace BatchRenameMaterial
                 }
             }
 
-            addCard(processorType, arg);
+            AddCard(processorType, arg);
         }
 
         private void RegexUppercase_Button_Click(object sender, RoutedEventArgs e)
@@ -678,7 +757,7 @@ namespace BatchRenameMaterial
                 }
             }
 
-            addCard(processorType, arg);
+            AddCard(processorType, arg);
         }
 
         private void Lowercase_Button_Click(object sender, RoutedEventArgs e)
@@ -704,7 +783,7 @@ namespace BatchRenameMaterial
                 }
             }
 
-            addCard(processorType, arg);
+            AddCard(processorType, arg);
         }
 
         private void RegexLowercase_Button_Click(object sender, RoutedEventArgs e)
@@ -730,7 +809,7 @@ namespace BatchRenameMaterial
                 }
             }
 
-            addCard(processorType, arg);
+            AddCard(processorType, arg);
         }
 
         private void NameNormalize_Button_Click(object sender, RoutedEventArgs e)
@@ -756,7 +835,7 @@ namespace BatchRenameMaterial
                 }
             }
 
-            addCard(processorType, arg);
+            AddCard(processorType, arg);
         }
 
 

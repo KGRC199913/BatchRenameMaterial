@@ -35,6 +35,20 @@
                 </StackPanel>
             </materialDesign:Card>
         </DataTemplate>
+
+        <DataTemplate x:Key="ProcessorChooseButton" DataType="ProcessorViewModel">
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button ToolTip="{Binding ToolTipsText}"
+                        CommandParameter="{Binding PType}"
+                        Command="{Binding Commander}">
+                    <materialDesign:PackIcon Kind="{Binding IconKind}"/>
+                </Button>
+                <RepeatButton Content="{Binding ProcessorName}" 
+                              IsHitTestVisible="False">
+                </RepeatButton>
+            </StackPanel>
+        </DataTemplate>
+        
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top"
@@ -170,59 +184,59 @@
                 Grid.Row="0"
                 Grid.RowSpan="1"
                 Margin="7">
-                
-                <Grid.ColumnDefinitions>
+
+                    <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Name="addFilesButton" Width="60" Click="AddFilesButton_Click" Grid.Column="0"
+                    </Grid.ColumnDefinitions>
+                    <Button Name="addFilesButton" Width="60" Click="AddFilesButton_Click" Grid.Column="0"
                                 ToolTip="Add file(s)">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="File"/>
-                        <materialDesign:PackIcon Kind="Plus"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="addFoldersButton" Width="60" Click="AddFoldersButton_Click" Grid.Column="1"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="File"/>
+                            <materialDesign:PackIcon Kind="Plus"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="addFoldersButton" Width="60" Click="AddFoldersButton_Click" Grid.Column="1"
                                 ToolTip="Add folder(s)">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Folder"/>
-                        <materialDesign:PackIcon Kind="Plus"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="fileUpButton" Width="60" Click="FileUpButton_Click" Grid.Column="2"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Folder"/>
+                            <materialDesign:PackIcon Kind="Plus"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="fileUpButton" Width="60" Click="FileUpButton_Click" Grid.Column="2"
                                 ToolTip="Move item up">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="File"/>
-                        <materialDesign:PackIcon Kind="ArrowDropUp"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="fileDownButton" Width="60" Click="FileDownButton_Click" Grid.Column="1"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="File"/>
+                            <materialDesign:PackIcon Kind="ArrowDropUp"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="fileDownButton" Width="60" Click="FileDownButton_Click" Grid.Column="1"
                                 ToolTip="Move item down">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="File"/>
-                        <materialDesign:PackIcon Kind="ArrowDropDown"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="fileUpMostButton" Width="60" Click="FileUpMostButton_Click" Grid.Column="3"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="File"/>
+                            <materialDesign:PackIcon Kind="ArrowDropDown"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="fileUpMostButton" Width="60" Click="FileUpMostButton_Click" Grid.Column="3"
                                 ToolTip="Move item to top">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="File"/>
-                        <materialDesign:PackIcon Kind="ArrowUpward"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="fileDownMostButton" Width="60" Click="FileDownMostButton_Click" Grid.Column="4"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="File"/>
+                            <materialDesign:PackIcon Kind="ArrowUpward"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="fileDownMostButton" Width="60" Click="FileDownMostButton_Click" Grid.Column="4"
                                 ToolTip="Move item to bottom">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="File"/>
-                        <materialDesign:PackIcon Kind="ArrowDownward"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
-            <DataGrid
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="File"/>
+                            <materialDesign:PackIcon Kind="ArrowDownward"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <DataGrid
                               Grid.Row="1"
                               Grid.RowSpan="8"
                               Grid.Column="2"
@@ -237,36 +251,36 @@
                               CanUserResizeColumns="True"
                               HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Auto" Margin="5,5,0,10">
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="0.7*">
-                        <DataGridTemplateColumn.Header>
-                            <materialDesign:PackIcon Kind="DotsVerticalCircle"/>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <materialDesign:PackIcon x:Name="fileTypeIcon" Kind="File"/>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsFile}" Value="False">
-                                        <Setter Property="Kind" Value="Folder" TargetName="fileTypeIcon"/>
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <materialDesign:MaterialDataGridTextColumn Header="File Name" Width="2*"
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="0.7*">
+                            <DataGridTemplateColumn.Header>
+                                <materialDesign:PackIcon Kind="DotsVerticalCircle"/>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <materialDesign:PackIcon x:Name="fileTypeIcon" Kind="File"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsFile}" Value="False">
+                                            <Setter Property="Kind" Value="Folder" TargetName="fileTypeIcon"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <materialDesign:MaterialDataGridTextColumn Header="File Name" Width="2*"
                                                                        Binding="{Binding Name}"/>
-                    <materialDesign:MaterialDataGridTextColumn Header="Extension" Width="1.2*"
+                        <materialDesign:MaterialDataGridTextColumn Header="Extension" Width="1.2*"
                                                                        Binding="{Binding Extension}"/>
-                    <materialDesign:MaterialDataGridTextColumn Header="New Name" Width="2*"
+                        <materialDesign:MaterialDataGridTextColumn Header="New Name" Width="2*"
                                                                        Binding="{Binding NewName}"/>
-                    <materialDesign:MaterialDataGridTextColumn Header="Path" Width="3*"
+                        <materialDesign:MaterialDataGridTextColumn Header="Path" Width="3*"
                                                                        Binding="{Binding Path}"/>
-                    <materialDesign:MaterialDataGridTextColumn Header="Error" Width="*"
+                        <materialDesign:MaterialDataGridTextColumn Header="Error" Width="*"
                                                                        Binding="{Binding Error}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-                </StackPanel>
-                <StackPanel 
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <StackPanel 
                 Name="fileCountStackPanel"
                 Orientation="Vertical"
                 Grid.Column="2"
@@ -276,12 +290,13 @@
                 <ProgressBar Name="fileCountProgressBar" Minimum="0" Maximum="1000" Value="{Binding Count, Mode=OneWay}" Margin="20, 10, 20, 0"/>
                 <Label Content="{Binding Count, Mode=OneWay}" ContentStringFormat="File count: {0}/1000" Height="25" Margin="20, 5, 20, 0"/>
             </StackPanel>
-            
-            
+
+
             <Border Name="Border_BlurWhenPopupBoxEnter"
                 Grid.Row="0" Grid.RowSpan="9"
                 Grid.Column="0" Grid.ColumnSpan="5" 
-                Background="{DynamicResource MaterialDesignPaper}" Opacity="0" IsHitTestVisible="False"/>    <!-- This was setted by PopupBox Mouse Enter-->
+                Background="{DynamicResource MaterialDesignPaper}" Opacity="0" IsHitTestVisible="False"/>
+            <!-- This was setted by PopupBox Mouse Enter-->
 
             <materialDesign:PopupBox Name="PopupBox_addRule"
                 Grid.Row="8"
@@ -297,7 +312,12 @@
                 MouseEnter="PopupBox_addRule_MouseEnter" MouseLeave="PopupBox_addRule_MouseLeave"
                 PopupMode="MouseOver">
 
-                <StackPanel Name="allPopupButton_StackPanel"
+                <ItemsControl Name="ProcessorsHolderItemsControl" 
+                              ItemsSource="{Binding}"
+                              ItemTemplate="{StaticResource ProcessorChooseButton}">
+
+                </ItemsControl>
+                <!--<StackPanel Name="allPopupButton_StackPanel"
                   Orientation="Vertical">
                     
                     <StackPanel Name ="CreateGUID_StackPanel" Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
@@ -363,10 +383,10 @@
                                 <materialDesign:PackIcon Kind="RenameBox" />
                             </Button>
                         </StackPanel>
-                </StackPanel>
+                </StackPanel>-->
+                
             </materialDesign:PopupBox>
-            
         </Grid>
     </DockPanel>
-    
+
 </Window>

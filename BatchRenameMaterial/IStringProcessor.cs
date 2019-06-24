@@ -9,7 +9,7 @@ namespace BatchRenameMaterial
     /// <summary>
     /// a Processor to modified a string.
     /// </summary>
-    interface IStringProcessor
+    public interface IStringProcessor
     {
         /// <summary>
         ///     Commit the change.
@@ -24,7 +24,7 @@ namespace BatchRenameMaterial
         string Description { get; }
     }
 
-    enum ProcessorType
+    public enum ProcessorType
     {
         Null,
         StringReplacer,
@@ -34,7 +34,8 @@ namespace BatchRenameMaterial
         StringLowerCaser,
         StringNameNormalizer,
         StringGUIDCreator,
-        StringRegexUpperCaser,
-        StringRegexLowerCaser
+        StringRegexLowercaser,
+        StringRegexUppercaser
+
     }
 }

@@ -19,13 +19,90 @@ namespace BatchRenameMaterial
     public partial class MainWindow : Window
     {
         ObservableCollection<File> files = new ObservableCollection<File>();
-        BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
+        public static BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
+        BindingList<ProcessorViewModel> processorWrapers = new BindingList<ProcessorViewModel>()
+        {
+            new ProcessorViewModel()
+            {
+                IconKind = "Hashtag",
+                ProcessorName = "Create GUID name",
+                Commander = Adder,
+                PType = ProcessorType.StringGUIDCreator
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "FormatLetterCaseUpper",
+                ProcessorName = "Non-regex Uppercaser",
+                Commander = Adder,
+                PType = ProcessorType.StringUpperCaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "FormatLetterCaseLower",
+                ProcessorName = "Non-regex Lowercaser",
+                Commander = Adder,
+                PType = ProcessorType.StringLowerCaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "ContentCut",
+                ProcessorName = "Trim",
+                Commander = Adder,
+                PType = ProcessorType.StringTrimer
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "FormatSize",
+                ProcessorName = "Regex Uppercase",
+                Commander = Adder,
+                PType = ProcessorType.StringRegexUppercaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "TextShadow",
+                ProcessorName = "Regex Lowercase",
+                Commander = Adder,
+                PType = ProcessorType.StringRegexLowercaser
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "RenameBox",
+                ProcessorName = "Name Normalize",
+                Commander = Adder,
+                PType = ProcessorType.StringNameNormalizer
+            }
+        };
+        static ProcessorAdder Adder = new ProcessorAdder();
+
         enum DuplicateResolveType
         {
             KeepOldName,
             AddNumber
         };
         DuplicateResolveType resolveType;
+
+        public static DialogType GetDialogTypeFromProcessorType(ProcessorType type)
+        { 
+            switch (type)
+            {
+                case ProcessorType.StringNameNormalizer:
+                case ProcessorType.StringTrimer:
+                case ProcessorType.StringGUIDCreator:
+                    return DialogType.NoDialog;
+                case ProcessorType.StringLowerCaser:
+                case ProcessorType.StringUpperCaser:
+                    return DialogType.CaseConfigDialog;
+                case ProcessorType.StringRegexLowercaser:
+                case ProcessorType.StringRegexUppercaser:
+                    return DialogType.RegexCaseConfigDialog;
+                case ProcessorType.StringRemover:
+                    return DialogType.RemoverConfigDialog;
+                case ProcessorType.StringReplacer:
+                    return DialogType.ReplacerConfigDialog;
+                default:
+                    return DialogType.NoDialog;
+            }
+}
 
         public MainWindow()
         {
@@ -34,6 +111,8 @@ namespace BatchRenameMaterial
             this.filesDataGrid.DataContext = files;
             this.rulesListView.DataContext = processors;
             this.fileCountStackPanel.DataContext = files;
+            this.ProcessorsHolderItemsControl.DataContext = processorWrapers;
+
             SetStateRulePositionControl(false);
         }
 
@@ -108,6 +187,7 @@ namespace BatchRenameMaterial
             });
 
             UpdateNewName();
+
         }
 
         private void SaveRulesButton_Click(object sender, RoutedEventArgs e)
@@ -263,13 +343,13 @@ namespace BatchRenameMaterial
                 case ProcessorType.StringGUIDCreator:
                     processor = new StringGUIDCreator();
                     break;
-                case ProcessorType.StringRegexUpperCaser:
+                case ProcessorType.StringRegexUppercaser:
                     processor = new StringRegexUppercaser()
                     {
                         Arg = arg as StringRegexCaseArg
                     };
                     break;
-                case ProcessorType.StringRegexLowerCaser:
+                case ProcessorType.StringRegexLowercaser:
                     processor = new StringRegexLowercaser()
                     {
                         Arg = arg as StringRegexCaseArg
@@ -510,6 +590,272 @@ namespace BatchRenameMaterial
             files.Remove(item);
             files.Add(item);
             filesDataGrid.SelectedIndex = files.Count - 1;
+        }
+
+        public static void AddCard(ProcessorType processorType, object arg)
+        {
+            // set type and arg base on user input
+
+            //TODO: get Args and rule type
+            //TODO: Create an Enum for types
+
+            IStringProcessor processor = null;
+
+            // Create correct type of string processor
+            switch (processorType)
+            {
+                case ProcessorType.StringReplacer: // 0 is String regex replacer // SUBJECT OT BE CHANGED
+                    processor = new StringReplacer()
+                    {
+                        Arg = arg as StringReplaceArg
+                    };
+                    break;
+                case ProcessorType.StringRemover:
+                    processor = new StringRemover()
+                    {
+                        Arg = arg as StringRemoveArg
+                    };
+                    break;
+                case ProcessorType.StringUpperCaser:
+                    processor = new StringUpperCaser()
+                    {
+                        Arg = arg as StringCaseArg
+                    };
+                    break;
+                case ProcessorType.StringLowerCaser:
+                    processor = new StringLowerCaser()
+                    {
+                        Arg = arg as StringCaseArg
+                    };
+                    break;
+                case ProcessorType.StringRegexLowercaser:
+                    processor =new StringRegexLowercaser()
+                    {
+                        Arg = arg as StringRegexCaseArg
+                    };
+                    break;
+                case ProcessorType.StringRegexUppercaser:
+                    processor = new StringRegexUppercaser()
+                    {
+                        Arg = arg as StringRegexCaseArg
+                    };
+                    break;
+                case ProcessorType.StringTrimer:
+                    processor = new StringTrimer();
+                    break;
+                case ProcessorType.StringNameNormalizer:
+                    processor = new StringNameNormalizer();
+                    break;
+                case ProcessorType.StringGUIDCreator:
+                    processor = new StringGUIDCreator();
+                    break;
+                default:
+                    break;
+            }
+
+            processors.Add(processor);
+        }
+
+        private void CreateGUID_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringGUIDCreator;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            AddCard(processorType, arg);
+        }
+
+        private void Uppercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringUpperCaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            AddCard(processorType, arg);
+        }
+
+        private void Trim_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringTrimer;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            AddCard(processorType, arg);
+        }
+
+        private void RegexUppercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringRegexUppercaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            AddCard(processorType, arg);
+        }
+
+        private void Lowercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringLowerCaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            AddCard(processorType, arg);
+        }
+
+        private void RegexLowercase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringRegexLowercaser;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            AddCard(processorType, arg);
+        }
+
+        private void NameNormalize_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: let user choose type and decide a dialog type
+            ProcessorType processorType;
+
+            //TODO: Add config dialog
+            processorType = ProcessorType.StringNameNormalizer;
+            DialogType type = DialogType.NoDialog;
+            object arg = null;
+
+            if (type != DialogType.NoDialog)
+            {
+                ConfigDialog cfDialog = new ConfigDialog(type);
+                if (cfDialog.ShowDialog() == true)
+                {
+                    arg = cfDialog.ArgReturn;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            AddCard(processorType, arg);
+        }
+
+
+
+
+        private void PopupBox_addRule_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Border_BlurWhenPopupBoxEnter.Opacity = 0.85;
+
+            Border_BlurWhenPopupBoxEnter.IsHitTestVisible = true;
+
+
+        }
+
+        private void PopupBox_addRule_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Border_BlurWhenPopupBoxEnter.Opacity = 0;
+
+            Border_BlurWhenPopupBoxEnter.IsHitTestVisible = false;
+
         }
     }
 }

@@ -100,6 +100,8 @@
     </Compile>
     <Compile Include="File.cs" />
     <Compile Include="IReturnValue.cs" />
+    <Compile Include="ProcessorAdder.cs" />
+    <Compile Include="ProcessorViewModel.cs" />
     <Compile Include="RegexCaseConfigUserControl.xaml.cs">
       <DependentUpon>RegexCaseConfigUserControl.xaml</DependentUpon>
     </Compile>
@@ -186,6 +188,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon\regexLower_icon.png" />
+    <Resource Include="icon\regexUpper_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

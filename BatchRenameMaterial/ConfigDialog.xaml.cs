@@ -19,9 +19,8 @@ namespace BatchRenameMaterial
         NoDialog,
         ReplacerConfigDialog,
         RemoverConfigDialog,
-        UpperCaserConfigDialog,
-        LowerCaserConfigDialog,
-        RegexCaseConfigDialog
+        RegexCaseConfigDialog,
+        CaseConfigDialog
     }
 
     /// <summary>
@@ -39,8 +38,7 @@ namespace BatchRenameMaterial
                     return new ReplacerConfigUserControl();
                 case DialogType.RemoverConfigDialog:
                     return new RemoverConfigUserControl();
-                case DialogType.UpperCaserConfigDialog:
-                case DialogType.LowerCaserConfigDialog:
+                case DialogType.CaseConfigDialog:
                     return new CaserConfigUserControl();
                 case DialogType.RegexCaseConfigDialog:
                     return new RegexCaseConfigUserControl();

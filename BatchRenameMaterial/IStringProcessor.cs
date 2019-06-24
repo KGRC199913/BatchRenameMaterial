@@ -34,7 +34,8 @@ namespace BatchRenameMaterial
         StringLowerCaser,
         StringNameNormalizer,
         StringGUIDCreator,
-        StringRegexUpperCaser,
-        StringRegexLowerCaser
+        StringRegexLowercaser,
+        StringRegexUppercaser
+
     }
 }

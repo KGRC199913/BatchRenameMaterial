@@ -778,5 +778,11 @@ namespace BatchRenameMaterial
             Border_BlurWhenPopupBoxEnter.IsHitTestVisible = false;
 
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var tagStr = (String)((Button)sender).Tag;
+            MessageBox.Show(tagStr);
+        }
     }
 }

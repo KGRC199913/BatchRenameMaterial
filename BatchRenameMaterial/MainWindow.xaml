@@ -369,6 +369,7 @@
 
             </materialDesign:PopupBox>
 
+            <Button Content="TEST" Grid.Column="0" Grid.Row="8" Tag="Meow Meow Meow" Click="Button_Click"/>
         </Grid>
     </DockPanel>
 

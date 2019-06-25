@@ -38,4 +38,30 @@ namespace BatchRenameMaterial
         StringRegexUppercaser
 
     }
+
+    static class ProcessorTypeDetector
+    {
+        public static ProcessorType GetType(IStringProcessor processor)
+        {
+            if (processor is StringReplacer)
+                return ProcessorType.StringReplacer;
+            if (processor is StringRemover)
+                return ProcessorType.StringRemover;
+            if (processor is StringUpperCaser)
+                return ProcessorType.StringUpperCaser;
+            if (processor is StringLowerCaser)
+                return ProcessorType.StringLowerCaser;
+            if (processor is StringRegexUppercaser)
+                return ProcessorType.StringRegexUppercaser;
+            if (processor is StringRegexLowercaser)
+                return ProcessorType.StringRegexLowercaser;
+            if (processor is StringTrimer)
+                return ProcessorType.StringTrimer;
+            if (processor is StringNameNormalizer)
+                return ProcessorType.StringNameNormalizer;
+            if (processor is StringGUIDCreator)
+                return ProcessorType.StringGUIDCreator;
+            return ProcessorType.Null;
+        }
+    }
 }

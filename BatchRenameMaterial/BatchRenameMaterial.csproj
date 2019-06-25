@@ -98,6 +98,7 @@
     <Compile Include="CaserConfigUserControl.xaml.cs">
       <DependentUpon>CaserConfigUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConfigButtonVisibilityConverter.cs" />
     <Compile Include="File.cs" />
     <Compile Include="IReturnValue.cs" />
     <Compile Include="ProcessorAdder.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="ConfigDialog.xaml.cs">
       <DependentUpon>ConfigDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringTrim.cs" />
     <Compile Include="StringTrimer.cs" />
     <Compile Include="StringCaseArg.cs" />
     <Compile Include="StringUpperCaser.cs" />

@@ -16,8 +16,9 @@
         Icon=".\icon\icon.ico"
         mc:Ignorable="d"
         Title="Batch Rename" Height="600" Width="1200" MinHeight="600" MinWidth="1000">
-    
+
     <Window.Resources>
+        <local:ConfigButtonVisibilityConverter x:Key="visConverter"/>
         <DataTemplate x:Key="ruleCard">
             <materialDesign:Card>
                 <StackPanel Orientation="Vertical">
@@ -25,12 +26,19 @@
                         <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Description}"/>
                     </Label>
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                        <Button Name="removeThisRuleButton" Margin="10, 0, 0, 5" Width="30" Height="30" Style="{StaticResource MaterialDesignFloatingActionAccentButton
-}" Click="RemoveThisRuleButton_Click">
+                        <Button Name="removeThisRuleButton"
+                                Margin="10, 0, 0, 5"
+                                Width="30" Height="30"
+                                Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                                Click="RemoveThisRuleButton_Click">
                             <materialDesign:PackIcon Kind="Clear"/>
                         </Button>
-                        <Button Name="configThisRuleButton" Margin="10, 0, 10, 5" Width="30" Height="30" Style="{StaticResource MaterialDesignFloatingActionAccentButton
-}">
+                        <Button Name="configThisRuleButton"
+                                Margin="10, 0, 10, 5"
+                                Width="30" Height="30"
+                                Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                                Click="ConfigThisRuleButton_Click"
+                                Visibility="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource visConverter}}">
                             <materialDesign:PackIcon Kind="Build"/>
                         </Button>
                     </StackPanel>

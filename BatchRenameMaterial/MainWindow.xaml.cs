@@ -651,17 +651,23 @@ namespace BatchRenameMaterial
 
         public static void AddCard(ProcessorType processorType, object arg)
         {
-            // set type and arg base on user input
-
-            //TODO: get Args and rule type
-            //TODO: Create an Enum for types
-
             IStringProcessor processor = null;
 
             // Create correct type of string processor
+            processor = GetProcessor(processorType, arg);
+
+            processors.Add(processor);
+            MainWindow.UpdateNewName();
+
+        }
+
+        private static IStringProcessor GetProcessor(ProcessorType processorType,
+                                                     object arg)
+        {
+            IStringProcessor processor = null;
             switch (processorType)
             {
-                case ProcessorType.StringReplacer: // 0 is String regex replacer // SUBJECT OT BE CHANGED
+                case ProcessorType.StringReplacer:
                     processor = new StringReplacer()
                     {
                         Arg = arg as StringReplaceArg
@@ -710,9 +716,7 @@ namespace BatchRenameMaterial
                     break;
             }
 
-            processors.Add(processor);
-            MainWindow.UpdateNewName();
-            
+            return processor;
         }
 
         private void CreateGUID_Button_Click(object sender, RoutedEventArgs e)
@@ -915,6 +919,24 @@ namespace BatchRenameMaterial
 
             Border_BlurWhenPopupBoxEnter.IsHitTestVisible = false;
 
+        }
+
+        private void ConfigThisRuleButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (IStringProcessor)((Button)sender).DataContext;
+            var processorType = ProcessorTypeDetector.GetType(item);
+            var dialogType = GetDialogTypeFromProcessorType(processorType);
+            ConfigDialog configDialog = new ConfigDialog(dialogType);
+            if (configDialog.ShowDialog() == true)
+            {
+                var index = processors.IndexOf(item);
+                IStringProcessor processor = GetProcessor(processorType, configDialog.ArgReturn);
+                processors.Insert(index, processor);
+                processors.RemoveAt(index + 1);
+                rulesListView.SelectedIndex = index;
+            }
+            else
+                return;
         }
     }
 }

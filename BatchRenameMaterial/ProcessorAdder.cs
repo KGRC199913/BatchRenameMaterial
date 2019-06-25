@@ -34,7 +34,6 @@ namespace BatchRenameMaterial
             }
 
             MainWindow.AddCard(processorType, arg);
-            
         }
     }
 }

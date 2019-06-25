@@ -13,8 +13,10 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         x:Name="FrontWindow"
+        Icon=".\icon\icon.ico"
         mc:Ignorable="d"
         Title="Batch Rename" Height="600" Width="1200" MinHeight="600" MinWidth="1000">
+    
     <Window.Resources>
         <DataTemplate x:Key="ruleCard">
             <materialDesign:Card>
@@ -125,15 +127,11 @@
                                 ToolTip="Start batch">
                         <materialDesign:PackIcon Kind="Play"/>
                     </Button>
-                    <Button Name="addRuleButton" Width="60" Click="AddRuleButton_Click" Grid.Column="1"
-                                ToolTip="Add rule">
-                        <materialDesign:PackIcon Kind="Add"/>
-                    </Button>
-                    <Button Name="saveRulesButton" Width="60" Click="SaveRulesButton_Click" Grid.Column="2"
+                    <Button Name="saveRulesButton" Width="60" Click="SaveRulesButton_Click" Grid.Column="1"
                                 ToolTip="Save preset">
                         <materialDesign:PackIcon Kind="ContentSave"/>
                     </Button>
-                    <Button Name="loadRulesButton" Width="60" Click="LoadRulesButton_Click"  Grid.Column="3"
+                    <Button Name="loadRulesButton" Width="60" Click="LoadRulesButton_Click"  Grid.Column="2"
                                 ToolTip="Open preset">
                         <materialDesign:PackIcon Kind="FolderOpen"/>
                     </Button>
@@ -219,7 +217,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="fileUpButton" Width="60" Click="FileUpButton_Click" Grid.Column="2"
-                                ToolTip="Move item up"  IsEnabled="{Binding ElementName=fileCountProgressBar, Path=Value}">
+                                ToolTip="Move item up">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="File"/>
                             <materialDesign:PackIcon Kind="ArrowDropUp"/>
@@ -328,74 +326,6 @@
                               ItemTemplate="{StaticResource ProcessorChooseButton}">
 
                 </ItemsControl>
-                <!--<StackPanel Name="allPopupButton_StackPanel"
-                  Orientation="Vertical">
-                    
-                    <StackPanel Name ="CreateGUID_StackPanel" Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
-                        <RepeatButton Name="Desc_GUID" Content="Create GUID Name" Margin="0,0,10,0" 
-                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
-                        <Button Name="CreateGUID_Button"
-                            Click="CreateGUID_Button_Click" >
-                            <materialDesign:PackIcon Kind="Hashtag" />
-                        </Button>
-                    </StackPanel>
-
-                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
-                            <RepeatButton Name="Desc_Uppercase" Content="Uppercase" Margin="0,0,10,0" 
-                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
-                            <Button Name="Uppercase_Button"
-                            Click="Uppercase_Button_Click" >
-                                <materialDesign:PackIcon Kind="FormatLetterCaseUpper" />
-                            </Button>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
-                            <RepeatButton Name="Desc_Lowercase" Content="Lowercase" Margin="0,0,10,0" 
-                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
-                            <Button Name="Lowercase_Button"
-                            Click="Lowercase_Button_Click" >
-                                <materialDesign:PackIcon Kind="FormatLetterCaseLower" />
-                            </Button>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
-                            <RepeatButton Name="Desc_Trim" Content="Trim string" Margin="0,0,10,0" 
-                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
-                        <Button Name="Trim_Button" ToolTip="Remove all leading + trailing white space"
-                            Click="Trim_Button_Click" >
-                                <materialDesign:PackIcon Kind="ContentCut" />
-                            </Button>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
-                            <RepeatButton Name="Desc_RegexUppercase" Content="Regex Uppercase" Margin="0,0,10,0" 
-                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
-                        <Button Name="RegexUppercase_Button" ToolTip="Uppercase All token match the regex"
-                            Click="RegexUppercase_Button_Click" >
-                                <Image Source="icon/regexUpper_icon.png" Height="25" Width="25"/>
-                            </Button>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
-                            <RepeatButton Name="Desc_RegexLowrecase" Content="Regex Lowercase" Margin="0,0,10,0" 
-                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
-                        <Button Name="RegexLowercase_Button" ToolTip="Lowercase All token match the regex"
-                            Click="RegexLowercase_Button_Click" >
-                                <Image Source="icon/regexLower_icon.png" Height="25" Width="25"/>
-                            </Button>
-                        </StackPanel>
-
-
-                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,0,-5,0">
-                            <RepeatButton Name="Desc_NameNormalize" Content="Name normalize" Margin="0,0,10,0" 
-                                      IsHitTestVisible="False" Background="{DynamicResource MaterialDesignPaper}" Foreground="{DynamicResource MaterialDesignBody}" />
-                            <Button Name="NameNormalize_Button"
-                            Click="NameNormalize_Button_Click" >
-                                <materialDesign:PackIcon Kind="RenameBox" />
-                            </Button>
-                        </StackPanel>
-                </StackPanel>-->
-                
             </materialDesign:PopupBox>
         </Grid>
     </DockPanel>

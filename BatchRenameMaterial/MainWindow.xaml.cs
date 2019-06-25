@@ -21,7 +21,7 @@ namespace BatchRenameMaterial
     {
 
 
-        ObservableCollection<File> files = new ObservableCollection<File>();
+        static ObservableCollection<File> files = new ObservableCollection<File>();
         public static BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
         BindingList<ProcessorViewModel> processorWrapers = new BindingList<ProcessorViewModel>()
         {
@@ -78,6 +78,20 @@ namespace BatchRenameMaterial
                 ProcessorName = "Name Normalize",
                 Commander = Adder,
                 PType = ProcessorType.StringNameNormalizer
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "FindReplace",
+                ProcessorName = "Regex Replace",
+                Commander = Adder,
+                PType = ProcessorType.StringReplacer
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "RemoveCircle",
+                ProcessorName = "Non-regex Remove",
+                Commander = Adder,
+                PType = ProcessorType.StringRemover
             }
         };
         static ProcessorAdder Adder = new ProcessorAdder();
@@ -87,7 +101,7 @@ namespace BatchRenameMaterial
             KeepOldName,
             AddNumber
         };
-        DuplicateResolveType resolveType;
+        static DuplicateResolveType resolveType;
 
         public static DialogType GetDialogTypeFromProcessorType(ProcessorType type)
         {
@@ -122,14 +136,14 @@ namespace BatchRenameMaterial
             this.ProcessorsHolderItemsControl.DataContext = processorWrapers;
 
             SetStateRulePositionControl(false);
+            SetEnableFilePositioningButtons(false);
         }
 
         /// <summary>
         /// UpdateNewName for all name in files list.
         /// </summary>
-        private void UpdateNewName()
+        public static void UpdateNewName()
         {
-            string tmpNewName;
             HashSet<String> fullNameList = new HashSet<string>();
             foreach (var file in files)
             {
@@ -148,7 +162,7 @@ namespace BatchRenameMaterial
                     //option 1: keep old name
                     if (resolveType == DuplicateResolveType.KeepOldName)
                     {
-                        file.NewName = Name;
+                        file.NewName = file.Name;
                     }
                     else
                     {
@@ -165,33 +179,61 @@ namespace BatchRenameMaterial
             };
         }
 
-        // SUBJECT TO BE CHANGED
         private void StartRenameButton_Click(object sender, RoutedEventArgs e)
         {
             files.AsParallel().ForAll(i =>
             {
-                if (System.IO.File.Exists(i.getNewFullName()))
+                // file
+                if (i.IsFile == true)
                 {
-                    if (resolveType == DuplicateResolveType.KeepOldName)
+                    if (System.IO.File.Exists(i.getNewFullName()))
                     {
+                        if (resolveType == DuplicateResolveType.KeepOldName)
+                        {
+                            i.NewName = i.Name;
+                        }
+                        else
+                        {
+                            while (System.IO.File.Exists(i.getNewFullName()))
+                                ++i.DuplicateCount;
+                        }
+                    }
+                    try
+                    {
+                        System.IO.File.Move(i.Path + "\\" + i.Name + i.Extension, i.getNewFullName());
+                    }
+                    catch (Exception ex)
+                    {
+                        i.Error = ex.Message;
                         i.NewName = i.Name;
                     }
-                    else
+                    i.Name = i.NewName;
+                }
+                // folder
+                else
+                {
+                    if (Directory.Exists(i.getNewFullName()))
                     {
-                        while (System.IO.File.Exists(i.getNewFullName()))
-                            ++i.DuplicateCount;
+                        if (resolveType == DuplicateResolveType.KeepOldName)
+                        {
+                            i.NewName = i.Name;
+                        }
+                        else
+                        {
+                            while (Directory.Exists(i.getNewFullName()))
+                                ++i.DuplicateCount;
+                        }
                     }
+                    try
+                    {
+                        Directory.Move(i.Path + "\\" + i.Name, i.getNewFullName());
+                    } catch(Exception ex)
+                    {
+                        i.Error = ex.Message;
+                        i.NewName = i.Name;
+                    }
+                    i.Name = i.NewName;
                 }
-                try
-                {
-                    System.IO.File.Move(i.Path + "\\" + i.Name + i.Extension, i.getNewFullName());
-                }
-                catch (Exception ex)
-                {
-                    i.Error = ex.Message;
-                    i.NewName = i.Name;
-                }
-                i.Name = i.NewName;
             });
 
             UpdateNewName();
@@ -235,6 +277,7 @@ namespace BatchRenameMaterial
                 //TODO: announce saving preset failure to user
                 MessageBox.Show("Save preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
 
         private void LoadRulesButton_Click(object sender, RoutedEventArgs e)
@@ -275,6 +318,8 @@ namespace BatchRenameMaterial
                 //TODO: annound loading preset failure to user
                 MessageBox.Show("Load preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            UpdateNewName();
         }
 
         private void RemoveThisRuleButton_Click(object sender, RoutedEventArgs e)
@@ -496,23 +541,22 @@ namespace BatchRenameMaterial
             fileDialog.IsFolderPicker = true;
             fileDialog.Multiselect = true;
 
-            string[] subfolders;
-            File newfolder;
             if (fileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 foreach (var folderFullName in fileDialog.FileNames)
                 {
-                    subfolders = Directory.GetDirectories(folderFullName);
-                    foreach (var subfolder in subfolders)
+                    try
                     {
-                        newfolder = new File()
+                        files.Add(
+                        new File()
                         {
-                            Name = new DirectoryInfo(subfolder).Name,
-                            Path = subfolder,
-                            IsFile = false
-                        };
-                        if (files.Contains(newfolder)) continue;
-                        files.Add(newfolder);
+                            Name = new DirectoryInfo(folderFullName).Name,
+                            IsFile = false,
+                            Path = Directory.GetParent(folderFullName).Name
+                        });
+                    } catch (Exception ex)
+                    {
+                        continue;
                     }
                 }
             }
@@ -667,6 +711,8 @@ namespace BatchRenameMaterial
             }
 
             processors.Add(processor);
+            MainWindow.UpdateNewName();
+            
         }
 
         private void CreateGUID_Button_Click(object sender, RoutedEventArgs e)

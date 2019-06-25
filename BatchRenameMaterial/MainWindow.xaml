@@ -226,21 +226,21 @@
                         </StackPanel>
                     </Button>
                     <Button Name="fileDownButton" Width="60" Click="FileDownButton_Click" Grid.Column="3"
-                                ToolTip="Move item down" IsEnabled="{Binding ElementName=fileCountProgressBar, Path=Value}">
+                                ToolTip="Move item down">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="File"/>
                             <materialDesign:PackIcon Kind="ArrowDropDown"/>
                         </StackPanel>
                     </Button>
                     <Button Name="fileUpMostButton" Width="60" Click="FileUpMostButton_Click" Grid.Column="4"
-                                ToolTip="Move item to top" IsEnabled="{Binding ElementName=fileCountProgressBar, Path=Value}">
+                                ToolTip="Move item to top">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="File"/>
                             <materialDesign:PackIcon Kind="ArrowUpward"/>
                         </StackPanel>
                     </Button>
                     <Button Name="fileDownMostButton" Width="60" Click="FileDownMostButton_Click" Grid.Column="5"
-                                ToolTip="Move item to bottom" IsEnabled="{Binding ElementName=fileCountProgressBar, Path=Value}">
+                                ToolTip="Move item to bottom">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="File"/>
                             <materialDesign:PackIcon Kind="ArrowDownward"/>

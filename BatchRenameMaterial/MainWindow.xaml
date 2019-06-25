@@ -40,10 +40,21 @@
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button ToolTip="{Binding ToolTipsText}"
                         CommandParameter="{Binding PType}"
-                        Command="{Binding Commander}">
-                    <materialDesign:PackIcon Kind="{Binding IconKind}"/>
+                        Command="{Binding Commander}"
+                        >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon Kind="{Binding IconKind}"  Grid.Column="0" Grid.Row="0" Height="20" Width="20" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="{Binding IconKind.Length}"/>
+                        <Image Name="IconImage" Source="{Binding IconImg}" Height="24" Width="24" Grid.Column="0" Grid.Row="0"/>
+                    </Grid>
                 </Button>
                 <RepeatButton Content="{Binding ProcessorName}" 
+                              Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignPaper}" BorderThickness="0"
                               IsHitTestVisible="False">
                 </RepeatButton>
             </StackPanel>
@@ -208,7 +219,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="fileUpButton" Width="60" Click="FileUpButton_Click" Grid.Column="2"
-                                ToolTip="Move item up">
+                                ToolTip="Move item up"  IsEnabled="{Binding ElementName=fileCountProgressBar, Path=Value}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="File"/>
                             <materialDesign:PackIcon Kind="ArrowDropUp"/>

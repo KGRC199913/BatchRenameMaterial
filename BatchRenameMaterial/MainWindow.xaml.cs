@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace BatchRenameMaterial
 {
     /// <summary>
@@ -18,6 +19,8 @@ namespace BatchRenameMaterial
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
         ObservableCollection<File> files = new ObservableCollection<File>();
         public static BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
         BindingList<ProcessorViewModel> processorWrapers = new BindingList<ProcessorViewModel>()
@@ -46,20 +49,25 @@ namespace BatchRenameMaterial
             new ProcessorViewModel()
             {
                 IconKind = "ContentCut",
+                ToolTipsText = "Remove all leading + trailing white space",
                 ProcessorName = "Trim",
                 Commander = Adder,
                 PType = ProcessorType.StringTrimer
             },
             new ProcessorViewModel()
             {
-                IconKind = "FormatSize",
+                IconKind = "" ,
+                IconImg = "/icon/regexUpper_icon.png",
+                ToolTipsText = "Uppercase All token match the regex",
                 ProcessorName = "Regex Uppercase",
                 Commander = Adder,
                 PType = ProcessorType.StringRegexUppercaser
             },
             new ProcessorViewModel()
             {
-                IconKind = "TextShadow",
+                IconKind = "",
+                IconImg = "/icon/regexLower_icon.png",
+                ToolTipsText = "Uppercase All token match the regex",
                 ProcessorName = "Regex Lowercase",
                 Commander = Adder,
                 PType = ProcessorType.StringRegexLowercaser
@@ -82,7 +90,7 @@ namespace BatchRenameMaterial
         DuplicateResolveType resolveType;
 
         public static DialogType GetDialogTypeFromProcessorType(ProcessorType type)
-        { 
+        {
             switch (type)
             {
                 case ProcessorType.StringNameNormalizer:
@@ -102,7 +110,7 @@ namespace BatchRenameMaterial
                 default:
                     return DialogType.NoDialog;
             }
-}
+        }
 
         public MainWindow()
         {
@@ -564,13 +572,18 @@ namespace BatchRenameMaterial
 
         private void FileUpButton_Click(object sender, RoutedEventArgs e)
         {
+           
+            
             int currentRow = filesDataGrid.SelectedIndex;
             SwapListPosition(currentRow, currentRow - 1, files);
             filesDataGrid.SelectedIndex = currentRow - 1;
+
         }
 
         private void FileDownButton_Click(object sender, RoutedEventArgs e)
         {
+           
+
             int currentRow = filesDataGrid.SelectedIndex;
             SwapListPosition(currentRow, currentRow + 1, files);
             filesDataGrid.SelectedIndex = currentRow + 1;
@@ -629,7 +642,7 @@ namespace BatchRenameMaterial
                     };
                     break;
                 case ProcessorType.StringRegexLowercaser:
-                    processor =new StringRegexLowercaser()
+                    processor = new StringRegexLowercaser()
                     {
                         Arg = arg as StringRegexCaseArg
                     };

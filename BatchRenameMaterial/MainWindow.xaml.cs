@@ -227,7 +227,8 @@ namespace BatchRenameMaterial
                     try
                     {
                         Directory.Move(i.Path + "\\" + i.Name, i.getNewFullName());
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         i.Error = ex.Message;
                         i.NewName = i.Name;
@@ -312,6 +313,7 @@ namespace BatchRenameMaterial
             if (fstream != null)
             {
                 processors = (BindingList<IStringProcessor>)formatter.Deserialize(fstream);
+                this.rulesListView.DataContext = processors;
             }
             else
             {
@@ -560,13 +562,14 @@ namespace BatchRenameMaterial
                         {
                             Name = new DirectoryInfo(folderFullName).Name,
                             IsFile = false,
-                            Path = Directory.GetParent(folderFullName).Name
+                            Path = Directory.GetParent(folderFullName).FullName
                         };
 
                         if (files.Contains(folder))
                             continue;
                         files.Add(folder);
-                    } catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         continue;
                     }
@@ -605,17 +608,16 @@ namespace BatchRenameMaterial
                 SetEnableFilePositioningButtons(true);
             }
 
+
             if (filesDataGrid.SelectedIndex == 0)
             {
                 fileUpButton.IsEnabled = fileUpMostButton.IsEnabled = false;
             }
-            else
+            if (filesDataGrid.SelectedIndex == (files.Count - 1))
             {
-                if (filesDataGrid.SelectedIndex == (files.Count - 1))
-                {
-                    fileDownButton.IsEnabled = fileDownMostButton.IsEnabled = false;
-                }
+                fileDownButton.IsEnabled = fileDownMostButton.IsEnabled = false;
             }
+
         }
 
         private void SetEnableFilePositioningButtons(bool isEnable)
@@ -628,8 +630,8 @@ namespace BatchRenameMaterial
 
         private void FileUpButton_Click(object sender, RoutedEventArgs e)
         {
-           
-            
+
+
             int currentRow = filesDataGrid.SelectedIndex;
             SwapListPosition(currentRow, currentRow - 1, files);
             filesDataGrid.SelectedIndex = currentRow - 1;
@@ -638,7 +640,7 @@ namespace BatchRenameMaterial
 
         private void FileDownButton_Click(object sender, RoutedEventArgs e)
         {
-           
+
 
             int currentRow = filesDataGrid.SelectedIndex;
             SwapListPosition(currentRow, currentRow + 1, files);

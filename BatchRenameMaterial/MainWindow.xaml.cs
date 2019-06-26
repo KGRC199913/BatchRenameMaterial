@@ -14,13 +14,12 @@ using System.Linq;
 
 namespace BatchRenameMaterial
 {
+    
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-
-
         static ObservableCollection<File> files = new ObservableCollection<File>();
         public static BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
         BindingList<ProcessorViewModel> processorWrapers = new BindingList<ProcessorViewModel>()
@@ -92,16 +91,28 @@ namespace BatchRenameMaterial
                 ProcessorName = "Non-regex Remove",
                 Commander = Adder,
                 PType = ProcessorType.StringRemover
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "Wrap",
+                ProcessorName = "Repositon",
+                Commander = Adder,
+                PType = ProcessorType.StringRepositioner
+            },
+            new ProcessorViewModel()
+            {
+                IconKind = "AddBox",
+                ProcessorName = "Add Token",
+                Commander = Adder,
+                PType = ProcessorType.StringAdder
             }
         };
         static ProcessorAdder Adder = new ProcessorAdder();
 
-        enum DuplicateResolveType
-        {
-            KeepOldName,
-            AddNumber
-        };
-        static DuplicateResolveType resolveType;
+        
+        static DuplicateResolveType resolveType = DuplicateResolveType.KeepOldName;
+
+        public static DuplicateResolveType ResolveType { get => resolveType; set => resolveType = value; }
 
         public static DialogType GetDialogTypeFromProcessorType(ProcessorType type)
         {
@@ -121,6 +132,10 @@ namespace BatchRenameMaterial
                     return DialogType.RemoverConfigDialog;
                 case ProcessorType.StringReplacer:
                     return DialogType.ReplacerConfigDialog;
+                case ProcessorType.StringRepositioner:
+                    return DialogType.RepostionConfigDialog;
+                case ProcessorType.StringAdder:
+                    return DialogType.AddConfigDialog;
                 default:
                     return DialogType.NoDialog;
             }
@@ -134,7 +149,6 @@ namespace BatchRenameMaterial
             this.rulesListView.DataContext = processors;
             this.fileCountStackPanel.DataContext = files;
             this.ProcessorsHolderItemsControl.DataContext = processorWrapers;
-
             SetStateRulePositionControl(false);
             SetEnableFilePositioningButtons(false);
         }
@@ -331,6 +345,7 @@ namespace BatchRenameMaterial
             {
                 processors.Remove(item);
             }
+            UpdateNewName();
         }
 
         private void AddRuleButton_Click(object sender, RoutedEventArgs e)
@@ -726,6 +741,18 @@ namespace BatchRenameMaterial
                 case ProcessorType.StringGUIDCreator:
                     processor = new StringGUIDCreator();
                     break;
+                case ProcessorType.StringRepositioner:
+                    processor = new StringRepositioner()
+                    {
+                        Arg = arg as StringRepositionArg,
+                    };
+                    break;
+                case ProcessorType.StringAdder:
+                    processor = new StringAdder()
+                    {
+                        Arg = arg as StringAdderArg,
+                    };
+                    break;
                 default:
                     break;
             }
@@ -951,6 +978,22 @@ namespace BatchRenameMaterial
             }
             else
                 return;
+            UpdateNewName();
+        }
+
+        private void ResolveRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateNewName();
+        }
+
+        private void RemoveFileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //TO BE IMPLEMENT
+        }
+
+        private void OpenLocationMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //TO BE IMPLEMENT
         }
     }
 }

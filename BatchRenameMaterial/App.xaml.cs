@@ -8,6 +8,11 @@ using System.Windows;
 
 namespace BatchRenameMaterial
 {
+    public enum DuplicateResolveType
+    {
+        KeepOldName,
+        AddNumber
+    };
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

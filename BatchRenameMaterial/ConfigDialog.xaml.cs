@@ -20,7 +20,9 @@ namespace BatchRenameMaterial
         ReplacerConfigDialog,
         RemoverConfigDialog,
         RegexCaseConfigDialog,
-        CaseConfigDialog
+        CaseConfigDialog,
+        RepostionConfigDialog,
+        AddConfigDialog
     }
 
     /// <summary>
@@ -42,6 +44,10 @@ namespace BatchRenameMaterial
                     return new CaserConfigUserControl();
                 case DialogType.RegexCaseConfigDialog:
                     return new RegexCaseConfigUserControl();
+                case DialogType.RepostionConfigDialog:
+                    return new RepostionConfigUserControl();
+                case DialogType.AddConfigDialog:
+                    return new AddConfigUserControl();
                 default:
                     return null;
             }
@@ -71,6 +77,11 @@ namespace BatchRenameMaterial
         {
             argReturn = (currentDialog as IReturnValue).ReturnValue;
             this.DialogResult = true;
+        }
+
+        private void ConfigWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

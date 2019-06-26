@@ -90,7 +90,7 @@ namespace BatchRenameMaterial
         public string getNewFullName()
         {
             if (duplicateCount != 0)
-                return path + "\\" + newName + "(" + duplicateCount.ToString() + ")" + extension;
+                return path + "\\" + newName + " (" + duplicateCount.ToString() + ")" + extension;
             return path + "\\" + newName + extension;
         }
 

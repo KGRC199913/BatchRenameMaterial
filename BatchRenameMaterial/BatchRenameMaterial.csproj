@@ -95,10 +95,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddConfigUserControl.xaml.cs">
+      <DependentUpon>AddConfigUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CaserConfigUserControl.xaml.cs">
       <DependentUpon>CaserConfigUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConfigButtonVisibilityConverter.cs" />
+    <Compile Include="EnumToBooleanConverter.cs" />
     <Compile Include="File.cs" />
     <Compile Include="IReturnValue.cs" />
     <Compile Include="ProcessorAdder.cs" />
@@ -112,6 +116,11 @@
     <Compile Include="ReplacerConfigUserControl.xaml.cs">
       <DependentUpon>ReplacerConfigUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RepostionConfigUserControl.xaml.cs">
+      <DependentUpon>RepostionConfigUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StringAdder.cs" />
+    <Compile Include="StringAdderArg.cs" />
     <Compile Include="StringGUIDCreator.cs" />
     <Compile Include="StringLowerCaser.cs" />
     <Compile Include="StringNameNormalizer.cs" />
@@ -125,9 +134,15 @@
     <Compile Include="ConfigDialog.xaml.cs">
       <DependentUpon>ConfigDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringRepositionArg.cs" />
+    <Compile Include="StringRepositioner.cs" />
     <Compile Include="StringTrimer.cs" />
     <Compile Include="StringCaseArg.cs" />
     <Compile Include="StringUpperCaser.cs" />
+    <Page Include="AddConfigUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CaserConfigUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -158,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ReplacerConfigUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RepostionConfigUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

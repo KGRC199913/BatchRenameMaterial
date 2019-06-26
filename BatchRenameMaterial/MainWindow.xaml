@@ -19,6 +19,7 @@
 
     <Window.Resources>
         <local:ConfigButtonVisibilityConverter x:Key="visConverter"/>
+        <local:EnumToBooleanConverter x:Key="resolveTypeBooleanConverter"/>
         <DataTemplate x:Key="ruleCard">
             <materialDesign:Card>
                 <StackPanel Orientation="Vertical">
@@ -69,7 +70,10 @@
                 </RepeatButton>
             </StackPanel>
         </DataTemplate>
-        
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="WrapText">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top"
@@ -85,6 +89,16 @@
                                   Checked="IsDarkModeToggleButton_Checked"  
                                   Unchecked="IsDarkModeToggleButton_Unchecked"/>
                 </StackPanel>
+                <MenuItem Header="Name Resolve Mode" Name="ResolveMenuItem">
+                    <RadioButton Name="KeepOldNameRadioButton" GroupName="ResolveType" Content="Keep Old Name" 
+                                 IsChecked="{Binding ResolveType, 
+                        Converter={StaticResource resolveTypeBooleanConverter}, 
+                        ConverterParameter={x:Static local:DuplicateResolveType.KeepOldName}}" Checked="ResolveRadioButton_Checked"/>
+                    <RadioButton Name="AddNumberRadioButton" GroupName="ResolveType" Content="Add Number"
+                                 IsChecked="{Binding ResolveType, 
+                        Converter={StaticResource resolveTypeBooleanConverter}, 
+                        ConverterParameter={x:Static local:DuplicateResolveType.AddNumber}}" Checked="ResolveRadioButton_Checked"/>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Bottom">
@@ -284,17 +298,43 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+
                         <materialDesign:MaterialDataGridTextColumn Header="File Name" Width="2*"
-                                                                       Binding="{Binding Name}"/>
+                                                                       Binding="{Binding Name}" 
+                                                                   ElementStyle="{StaticResource WrapText}"/>
                         <materialDesign:MaterialDataGridTextColumn Header="Extension" Width="1.2*"
-                                                                       Binding="{Binding Extension}"/>
+                                                                       Binding="{Binding Extension}"
+                                                                   ElementStyle="{StaticResource WrapText}"/>
                         <materialDesign:MaterialDataGridTextColumn Header="New Name" Width="2*"
-                                                                       Binding="{Binding NewName}"/>
+                                                                       Binding="{Binding NewName}" 
+                                                                   ElementStyle="{StaticResource WrapText}"/>
                         <materialDesign:MaterialDataGridTextColumn Header="Path" Width="3*"
-                                                                       Binding="{Binding Path}"/>
+                                                                       Binding="{Binding Path}" 
+                                                                   ElementStyle="{StaticResource WrapText}"/>
                         <materialDesign:MaterialDataGridTextColumn Header="Error" Width="*"
-                                                                       Binding="{Binding Error}"/>
+                                                                       Binding="{Binding Error}" 
+                                                                   ElementStyle="{StaticResource WrapText}"/>
                     </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="RemoveFileMenuItem" Click="RemoveFileMenuItem_Click">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="RemoveCircle" Foreground="Red" Margin="0, 0, 15, 0"/>
+                                        <TextBlock Text="Remove"/>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem>
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="FolderOpen" Margin="0, 0, 15, 0"/>
+                                        <TextBlock Text="Open Location"/>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                 </DataGrid>
             </StackPanel>
             <StackPanel 
@@ -332,7 +372,11 @@
                 <ItemsControl Name="ProcessorsHolderItemsControl" 
                               ItemsSource="{Binding}"
                               ItemTemplate="{StaticResource ProcessorChooseButton}">
-
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </materialDesign:PopupBox>
         </Grid>

@@ -35,8 +35,9 @@ namespace BatchRenameMaterial
         StringNameNormalizer,
         StringGUIDCreator,
         StringRegexLowercaser,
-        StringRegexUppercaser
-
+        StringRegexUppercaser,
+        StringRepositioner,
+        StringAdder
     }
 
     static class ProcessorTypeDetector
@@ -61,6 +62,10 @@ namespace BatchRenameMaterial
                 return ProcessorType.StringNameNormalizer;
             if (processor is StringGUIDCreator)
                 return ProcessorType.StringGUIDCreator;
+            if (processor is StringRepositioner)
+                return ProcessorType.StringRepositioner;
+            if (processor is StringAdder)
+                return ProcessorType.StringAdder;
             return ProcessorType.Null;
         }
     }

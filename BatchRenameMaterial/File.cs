@@ -25,14 +25,17 @@ namespace BatchRenameMaterial
                 OnPropertyChanged("Name");
             }
         }
-        public string NewName {
+        public string NewName
+        {
             get => newName;
-            set {
+            set
+            {
                 newName = value;
                 OnPropertyChanged("NewName");
             }
         }
-        public string Path {
+        public string Path
+        {
             get => path;
             set
             {
@@ -50,7 +53,8 @@ namespace BatchRenameMaterial
             }
         }
 
-        public bool IsFile {
+        public bool IsFile
+        {
             get => isFile;
             set
             {
@@ -59,7 +63,8 @@ namespace BatchRenameMaterial
             }
         }
 
-        public string Extension {
+        public string Extension
+        {
             get => extension;
             set
             {
@@ -72,10 +77,16 @@ namespace BatchRenameMaterial
 
         public override bool Equals(object obj)
         {
-            File newfile = (File)obj;
-            return name == newfile.name && path == newfile.path && isFile == newfile.isFile;
+            try
+            {
+                File newfile = (File)obj;
+                return name == newfile.name && path == newfile.path && isFile == newfile.isFile;
+            }
+            catch
+            {
+                return false;
+            }
         }
-
         public string getNewFullName()
         {
             if (duplicateCount != 0)

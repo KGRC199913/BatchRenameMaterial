@@ -543,17 +543,29 @@ namespace BatchRenameMaterial
 
             if (fileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
+                File folder;
                 foreach (var folderFullName in fileDialog.FileNames)
                 {
                     try
                     {
-                        files.Add(
-                        new File()
+                        //files.Add(
+                        //new File()
+                        //{
+                        //    Name = new DirectoryInfo(folderFullName).Name,
+                        //    IsFile = false,
+                        //    Path = Directory.GetParent(folderFullName).Name
+                        //});
+
+                        folder = new File()
                         {
                             Name = new DirectoryInfo(folderFullName).Name,
                             IsFile = false,
                             Path = Directory.GetParent(folderFullName).Name
-                        });
+                        };
+
+                        if (files.Contains(folder))
+                            continue;
+                        files.Add(folder);
                     } catch (Exception ex)
                     {
                         continue;

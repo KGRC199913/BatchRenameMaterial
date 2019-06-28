@@ -18,5 +18,16 @@ namespace BatchRenameMaterial
     /// </summary>
     public partial class App : Application
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            Logger.Info("Application Exit--");
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            Logger.Info("--Application Startup");
+        }
     }
 }

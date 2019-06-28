@@ -14,12 +14,14 @@ using System.Linq;
 
 namespace BatchRenameMaterial
 {
-    
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         static ObservableCollection<File> files = new ObservableCollection<File>();
         public static BindingList<IStringProcessor> processors = new BindingList<IStringProcessor>();
         BindingList<ProcessorViewModel> processorWrapers = new BindingList<ProcessorViewModel>()
@@ -109,7 +111,7 @@ namespace BatchRenameMaterial
         };
         static ProcessorAdder Adder = new ProcessorAdder();
 
-        
+
         static DuplicateResolveType resolveType = DuplicateResolveType.KeepOldName;
 
         public static DuplicateResolveType ResolveType { get => resolveType; set => resolveType = value; }
@@ -280,8 +282,7 @@ namespace BatchRenameMaterial
             }
             catch (IOException ex)
             {
-                // Preset is already exist
-                //TODO: ask user to re-enter new preset name/location OR ask user to override
+                Logger.Error(ex, "SaveRulesButton");
                 fstream = new FileStream(saveLoc, FileMode.Create, FileAccess.Write);
             }
 
@@ -289,7 +290,7 @@ namespace BatchRenameMaterial
                 formatter.Serialize(fstream, processors);
             else
             {
-                //TODO: announce saving preset failure to user
+                Logger.Debug("SaveRulesButton_Click: fstream is null");
                 MessageBox.Show("Save preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
@@ -317,11 +318,9 @@ namespace BatchRenameMaterial
             {
                 fstream = new FileStream(loadLoc, FileMode.Open, FileAccess.Read);
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
-                // Preset is not exist
-                // TODO: ask user to re-enter preset name/location
-
+                Logger.Error(ex, "LoadRuleButton");
             }
 
             if (fstream != null)
@@ -331,7 +330,7 @@ namespace BatchRenameMaterial
             }
             else
             {
-                //TODO: annound loading preset failure to user
+                Logger.Error("LoadRulesButton_Click: fstream is null");
                 MessageBox.Show("Load preset failed.", "Failure", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
@@ -348,103 +347,6 @@ namespace BatchRenameMaterial
             UpdateNewName();
         }
 
-        private void AddRuleButton_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringRemover;
-            DialogType type = DialogType.RemoverConfigDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            // set type and arg base on user input
-
-            //TODO: get Args and rule type
-            //TODO: Create an Enum for types
-
-            IStringProcessor processor = null;
-
-            // Create correct type of string processor
-            switch (processorType)
-            {
-                case ProcessorType.StringReplacer:
-                    processor = new StringReplacer()
-                    {
-                        Arg = arg as StringReplaceArg
-                    };
-                    break;
-                case ProcessorType.StringRemover:
-                    processor = new StringRemover()
-                    {
-                        Arg = arg as StringRemoveArg
-                    };
-                    break;
-                case ProcessorType.StringUpperCaser:
-                    processor = new StringUpperCaser()
-                    {
-                        Arg = arg as StringCaseArg
-                    };
-                    break;
-                case ProcessorType.StringLowerCaser:
-                    processor = new StringLowerCaser()
-                    {
-                        Arg = arg as StringCaseArg
-                    };
-                    break;
-                case ProcessorType.StringTrimer:
-                    processor = new StringTrimer();
-                    break;
-                case ProcessorType.StringNameNormalizer:
-                    processor = new StringNameNormalizer();
-                    break;
-                case ProcessorType.StringGUIDCreator:
-                    processor = new StringGUIDCreator();
-                    break;
-                case ProcessorType.StringRegexUppercaser:
-                    processor = new StringRegexUppercaser()
-                    {
-                        Arg = arg as StringRegexCaseArg
-                    };
-                    break;
-                case ProcessorType.StringRegexLowercaser:
-                    processor = new StringRegexLowercaser()
-                    {
-                        Arg = arg as StringRegexCaseArg
-                    };
-                    break;
-                default:
-                    return;
-            }
-
-            processors.Add(processor);
-            UpdateNewName();
-        }
-
-
-        /// <summary>
-        /// Swap item position in a collection<typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="first">
-        /// first item's index
-        /// </param>
-        /// <param name="second">
-        /// second item's index
-        /// </param>
-        /// <param name="list"></param>
         private void SwapListPosition<T>(int first, int second, Collection<T> list)
         {
             var temp = list[first];
@@ -475,12 +377,6 @@ namespace BatchRenameMaterial
 
         }
 
-        /// <summary>
-        /// Change all positioning button to enable/disable
-        /// </summary>
-        /// <param name="isEnable">
-        /// State to be set for buttons
-        /// </param>
         private void SetStateRulePositionControl(bool isEnable)
         {
             ruleUpButton.IsEnabled =
@@ -491,32 +387,74 @@ namespace BatchRenameMaterial
 
         private void RuleUpButton_Click(object sender, RoutedEventArgs e)
         {
-            var selected = rulesListView.SelectedIndex;
-            SwapListPosition(selected, selected - 1, processors);
-            rulesListView.SelectedIndex = selected - 1;
+            var items = rulesListView.SelectedItems;
+            List<IStringProcessor> tempItemsList = new List<IStringProcessor>();
+            foreach (var item in items)
+                tempItemsList.Add(item as IStringProcessor);
+
+            int row;
+            foreach (var item in tempItemsList)
+            {
+                try
+                {
+                    row = processors.IndexOf(item as IStringProcessor);
+                    SwapListPosition(row, row - 1, processors);
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
+            }
         }
 
         private void RuleDownButton_Click(object sender, RoutedEventArgs e)
         {
-            var selected = rulesListView.SelectedIndex;
-            SwapListPosition(selected, selected + 1, processors);
-            rulesListView.SelectedIndex = selected + 1;
+            var items = rulesListView.SelectedItems;
+            List<IStringProcessor> tempItemsList = new List<IStringProcessor>();
+            foreach (var item in items)
+                tempItemsList.Add(item as IStringProcessor);
+
+            int row;
+            foreach (var item in tempItemsList)
+            {
+                try
+                {
+                    row = processors.IndexOf(item as IStringProcessor);
+                    SwapListPosition(row, row + 1, processors);
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
+            }
         }
 
         private void RuleUpMostButton_Click(object sender, RoutedEventArgs e)
         {
-            var item = processors[rulesListView.SelectedIndex];
-            processors.Remove(item);
-            processors.Insert(0, item);
-            rulesListView.SelectedIndex = 0;
+            var items = filesDataGrid.SelectedItems;
+            List<IStringProcessor> tempItemsList = new List<IStringProcessor>();
+            foreach (var item in items)
+                tempItemsList.Add(item as IStringProcessor);
+
+            foreach (var item in tempItemsList)
+            {
+                processors.Remove(item as IStringProcessor);
+                processors.Insert(0, item as IStringProcessor);
+            }
         }
 
         private void RuleDownMostButton_Click(object sender, RoutedEventArgs e)
         {
-            var item = processors[rulesListView.SelectedIndex];
-            processors.Remove(item);
-            processors.Add(item);
-            rulesListView.SelectedIndex = processors.Count - 1;
+            var items = filesDataGrid.SelectedItems;
+            List<IStringProcessor> tempItemsList = new List<IStringProcessor>();
+            foreach (var item in items)
+                tempItemsList.Add(item as IStringProcessor);
+
+            foreach (var item in tempItemsList)
+            {
+                processors.Remove(item as IStringProcessor);
+                processors.Add(item as IStringProcessor);
+            }
         }
 
         private void AddFilesButton_Click(object sender, RoutedEventArgs e)
@@ -565,14 +503,6 @@ namespace BatchRenameMaterial
                 {
                     try
                     {
-                        //files.Add(
-                        //new File()
-                        //{
-                        //    Name = new DirectoryInfo(folderFullName).Name,
-                        //    IsFile = false,
-                        //    Path = Directory.GetParent(folderFullName).Name
-                        //});
-
                         folder = new File()
                         {
                             Name = new DirectoryInfo(folderFullName).Name,
@@ -600,16 +530,22 @@ namespace BatchRenameMaterial
 
         private void IsDarkModeToggleButton_Checked(object sender, RoutedEventArgs e)
         {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml");
-            Application.Current.Resources.MergedDictionaries[2].Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Purple.xaml");
-            Application.Current.Resources.MergedDictionaries[3].Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.DeepPurple.xaml");
+            Application.Current.Resources.MergedDictionaries[0].Source =
+                new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml");
+            Application.Current.Resources.MergedDictionaries[2].Source =
+                new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Purple.xaml");
+            Application.Current.Resources.MergedDictionaries[3].Source =
+                new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.DeepPurple.xaml");
         }
 
         private void IsDarkModeToggleButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml");
-            Application.Current.Resources.MergedDictionaries[2].Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Teal.xaml");
-            Application.Current.Resources.MergedDictionaries[3].Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml");
+            Application.Current.Resources.MergedDictionaries[0].Source =
+                new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml");
+            Application.Current.Resources.MergedDictionaries[2].Source =
+                new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Teal.xaml");
+            Application.Current.Resources.MergedDictionaries[3].Source =
+                new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml");
         }
 
         private void FilesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -645,37 +581,72 @@ namespace BatchRenameMaterial
 
         private void FileUpButton_Click(object sender, RoutedEventArgs e)
         {
+            var items = filesDataGrid.SelectedItems;
+            List<File> tempItemsList = new List<File>();
+            foreach (var item in items)
+                tempItemsList.Add(item as File);
 
-
-            int currentRow = filesDataGrid.SelectedIndex;
-            SwapListPosition(currentRow, currentRow - 1, files);
-            filesDataGrid.SelectedIndex = currentRow - 1;
-
+            int row;
+            foreach (var item in tempItemsList)
+            {
+                try
+                {
+                    row = files.IndexOf(item as File);
+                    SwapListPosition(row, row - 1, files);
+                } catch (Exception ex)
+                {
+                    continue;
+                }
+            }
         }
 
         private void FileDownButton_Click(object sender, RoutedEventArgs e)
         {
+            var items = filesDataGrid.SelectedItems;
+            List<File> tempItemsList = new List<File>();
+            foreach (var item in items)
+                tempItemsList.Add(item as File);
 
-
-            int currentRow = filesDataGrid.SelectedIndex;
-            SwapListPosition(currentRow, currentRow + 1, files);
-            filesDataGrid.SelectedIndex = currentRow + 1;
+            int row;
+            foreach (var item in tempItemsList)
+            {
+                try
+                {
+                    row = files.IndexOf(item as File);
+                    SwapListPosition(row, row + 1, files);
+                } catch (Exception ex)
+                {
+                    continue;
+                }
+            }
         }
 
         private void FileUpMostButton_Click(object sender, RoutedEventArgs e)
         {
-            var item = files[filesDataGrid.SelectedIndex];
-            files.Remove(item);
-            files.Insert(0, item);
-            filesDataGrid.SelectedIndex = 0;
+            var items = filesDataGrid.SelectedItems;
+            List<File> tempItemsList = new List<File>();
+            foreach (var item in items)
+                tempItemsList.Add(item as File);
+
+            foreach (var item in tempItemsList)
+            {
+                files.Remove(item as File);
+                files.Insert(0, item as File);
+            }
         }
 
         private void FileDownMostButton_Click(object sender, RoutedEventArgs e)
         {
-            var item = files[filesDataGrid.SelectedIndex];
-            files.Remove(item);
-            files.Add(item);
-            filesDataGrid.SelectedIndex = files.Count - 1;
+            var items = filesDataGrid.SelectedItems;
+            List<File> tempItemsList = new List<File>();
+            foreach (var item in items)
+                tempItemsList.Add(item as File);
+
+            foreach (var item in tempItemsList)
+            {
+                files.Remove(item as File);
+                files.Add(item as File);
+            }
         }
 
         public static void AddCard(ProcessorType processorType, object arg)
@@ -759,191 +730,6 @@ namespace BatchRenameMaterial
 
             return processor;
         }
-
-        private void CreateGUID_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringGUIDCreator;
-            DialogType type = DialogType.NoDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            AddCard(processorType, arg);
-        }
-
-        private void Uppercase_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringUpperCaser;
-            DialogType type = DialogType.NoDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            AddCard(processorType, arg);
-        }
-
-        private void Trim_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringTrimer;
-            DialogType type = DialogType.NoDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            AddCard(processorType, arg);
-        }
-
-        private void RegexUppercase_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringRegexUppercaser;
-            DialogType type = DialogType.NoDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            AddCard(processorType, arg);
-        }
-
-        private void Lowercase_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringLowerCaser;
-            DialogType type = DialogType.NoDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            AddCard(processorType, arg);
-        }
-
-        private void RegexLowercase_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringRegexLowercaser;
-            DialogType type = DialogType.NoDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            AddCard(processorType, arg);
-        }
-
-        private void NameNormalize_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: let user choose type and decide a dialog type
-            ProcessorType processorType;
-
-            //TODO: Add config dialog
-            processorType = ProcessorType.StringNameNormalizer;
-            DialogType type = DialogType.NoDialog;
-            object arg = null;
-
-            if (type != DialogType.NoDialog)
-            {
-                ConfigDialog cfDialog = new ConfigDialog(type);
-                if (cfDialog.ShowDialog() == true)
-                {
-                    arg = cfDialog.ArgReturn;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            AddCard(processorType, arg);
-        }
-
-
-
 
         private void PopupBox_addRule_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {

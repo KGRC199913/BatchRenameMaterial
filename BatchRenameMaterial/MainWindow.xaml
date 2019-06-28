@@ -195,7 +195,7 @@
                 ItemsSource="{Binding}"
                 ItemTemplate="{StaticResource ruleCard}"
                 HorizontalContentAlignment="Stretch"
-                SelectionMode="Single"
+                SelectionMode="Multiple"
                 SelectionChanged="RulesListView_SelectionChanged">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -278,7 +278,7 @@
                               IsReadOnly="True"
                               CanUserAddRows="False"
                               SelectionChanged="FilesDataGrid_SelectionChanged"
-                              SelectionMode="Single"
+                              SelectionMode="Extended"
                               CanUserResizeColumns="True"
                               HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Auto" Margin="5,5,0,10">

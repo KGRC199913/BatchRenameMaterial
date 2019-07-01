@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BatchRenameMaterial
 {
+    [Serializable]
     class StringAdderArg
     {
         public string Token { get; set; }

@@ -774,12 +774,22 @@ namespace BatchRenameMaterial
 
         private void RemoveFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //TO BE IMPLEMENT
-        }
+            var items = filesDataGrid.SelectedItems;
+            List<File> tempItemsList = new List<File>();
+            foreach (var item in items)
+                tempItemsList.Add(item as File);
 
-        private void OpenLocationMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            //TO BE IMPLEMENT
+            foreach (var item in tempItemsList)
+            {
+                try
+                {
+                    files.Remove(item);
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
+            }
         }
     }
 }

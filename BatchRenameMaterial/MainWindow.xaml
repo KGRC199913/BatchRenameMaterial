@@ -325,14 +325,6 @@
                                     </StackPanel>
                                 </MenuItem.Header>
                             </MenuItem>
-                            <MenuItem Name="OpenLocationMenuItem" Click="OpenLocationMenuItem_Click">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="FolderOpen" Margin="0, 0, 15, 0"/>
-                                        <TextBlock Text="Open Location"/>
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                 </DataGrid>
@@ -344,8 +336,8 @@
                 Grid.ColumnSpan="3"
                 Grid.Row="9"
                 Grid.RowSpan="1">
-                <ProgressBar Name="fileCountProgressBar" Minimum="0" Maximum="1000" Value="{Binding Count, Mode=OneWay}" Margin="20, 10, 20, 0"/>
-                <Label Content="{Binding Count, Mode=OneWay}" ContentStringFormat="File count: {0}/1000" Height="25" Margin="20, 5, 20, 0"/>
+                <ProgressBar Name="fileCountProgressBar" Minimum="0" Value="{Binding Count, Mode=OneWay}" Margin="20, 10, 20, 0" IsIndeterminate="True"/>
+                <Label Content="{Binding Count, Mode=OneWay}" ContentStringFormat="File count: {0}" Height="25" Margin="20, 5, 20, 0"/>
             </StackPanel>
 
 
@@ -355,7 +347,7 @@
                 Background="{DynamicResource MaterialDesignPaper}" Opacity="0" IsHitTestVisible="False"/>
             <!-- This was setted by PopupBox Mouse Enter-->
 
-            <materialDesign:PopupBox Name="PopupBox_addRule"
+            <materialDesign:PopupBox x:Name="PopupBox_addRule"
                 Grid.Row="8"
                 Grid.Column="1"
                 Grid.RowSpan="1"
@@ -369,17 +361,17 @@
                 MouseEnter="PopupBox_addRule_MouseEnter" MouseLeave="PopupBox_addRule_MouseLeave"
                 PopupMode="MouseOver">
 
-                <ItemsControl Name="ProcessorsHolderItemsControl" 
+                <ItemsControl x:Name="ProcessorsHolderItemsControl" 
                               ItemsSource="{Binding}"
                               ItemTemplate="{StaticResource ProcessorChooseButton}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Vertical"/>
+                            <WrapPanel Orientation="Vertical"
+                                       Height="{Binding Path=ActualHeight, ElementName=Border_BlurWhenPopupBoxEnter}"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </materialDesign:PopupBox>
         </Grid>
     </DockPanel>
-
 </Window>

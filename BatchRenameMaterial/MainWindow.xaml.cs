@@ -78,14 +78,14 @@ namespace BatchRenameMaterial
             },
             new ProcessorViewModel()
             {
-                IconImg = "regexLower_icon.png",
+                IconImg = "./icon/regexLower_icon.png",
                 ProcessorName = "Lowercase Name",
                 Commander = Adder,
                 PType = ProcessorType.StringLowercaserAll
             },
             new ProcessorViewModel()
             {
-                IconImg = "regexUpper_icon.png",
+                IconImg = "./icon/regexUpper_icon.png",
                 ProcessorName = "Uppercase Name",
                 Commander = Adder,
                 PType = ProcessorType.StringUppercaserAll

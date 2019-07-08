@@ -122,6 +122,7 @@
     <Compile Include="StringAdder.cs" />
     <Compile Include="StringAdderArg.cs" />
     <Compile Include="StringGUIDCreator.cs" />
+    <Compile Include="StringLowercaserAll.cs" />
     <Compile Include="StringLowerCaser.cs" />
     <Compile Include="StringNameNormalizer.cs" />
     <Compile Include="StringRegexCaseArg.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="StringTrimer.cs" />
     <Compile Include="StringCaseArg.cs" />
     <Compile Include="StringUpperCaser.cs" />
+    <Compile Include="StringUppercaserAll.cs" />
     <Page Include="AddConfigUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

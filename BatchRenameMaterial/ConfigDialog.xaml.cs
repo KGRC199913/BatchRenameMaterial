@@ -77,6 +77,7 @@ namespace BatchRenameMaterial
         {
             argReturn = (currentDialog as IReturnValue).ReturnValue;
             this.DialogResult = true;
+            MainWindow.UpdateNewName();
         }
 
         private void ConfigWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

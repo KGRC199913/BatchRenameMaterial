@@ -35,43 +35,11 @@ namespace BatchRenameMaterial
             },
             new ProcessorViewModel()
             {
-                IconKind = "FormatLetterCaseUpper",
-                ProcessorName = "Non-regex Uppercaser",
-                Commander = Adder,
-                PType = ProcessorType.StringUpperCaser
-            },
-            new ProcessorViewModel()
-            {
-                IconKind = "FormatLetterCaseLower",
-                ProcessorName = "Non-regex Lowercaser",
-                Commander = Adder,
-                PType = ProcessorType.StringLowerCaser
-            },
-            new ProcessorViewModel()
-            {
                 IconKind = "ContentCut",
                 ToolTipsText = "Remove all leading + trailing white space",
                 ProcessorName = "Trim",
                 Commander = Adder,
                 PType = ProcessorType.StringTrimer
-            },
-            new ProcessorViewModel()
-            {
-                IconKind = "" ,
-                IconImg = "/icon/regexUpper_icon.png",
-                ToolTipsText = "Uppercase All token match the regex",
-                ProcessorName = "Regex Uppercase",
-                Commander = Adder,
-                PType = ProcessorType.StringRegexUppercaser
-            },
-            new ProcessorViewModel()
-            {
-                IconKind = "",
-                IconImg = "/icon/regexLower_icon.png",
-                ToolTipsText = "Uppercase All token match the regex",
-                ProcessorName = "Regex Lowercase",
-                Commander = Adder,
-                PType = ProcessorType.StringRegexLowercaser
             },
             new ProcessorViewModel()
             {
@@ -107,6 +75,20 @@ namespace BatchRenameMaterial
                 ProcessorName = "Add Token",
                 Commander = Adder,
                 PType = ProcessorType.StringAdder
+            },
+            new ProcessorViewModel()
+            {
+                IconImg = "regexLower_icon.png",
+                ProcessorName = "Lowercase Name",
+                Commander = Adder,
+                PType = ProcessorType.StringLowercaserAll
+            },
+            new ProcessorViewModel()
+            {
+                IconImg = "regexUpper_icon.png",
+                ProcessorName = "Uppercase Name",
+                Commander = Adder,
+                PType = ProcessorType.StringUppercaserAll
             }
         };
         static ProcessorAdder Adder = new ProcessorAdder();
@@ -123,6 +105,8 @@ namespace BatchRenameMaterial
                 case ProcessorType.StringNameNormalizer:
                 case ProcessorType.StringTrimer:
                 case ProcessorType.StringGUIDCreator:
+                case ProcessorType.StringLowercaserAll:
+                case ProcessorType.StringUppercaserAll:
                     return DialogType.NoDialog;
                 case ProcessorType.StringLowerCaser:
                 case ProcessorType.StringUpperCaser:
@@ -167,6 +151,10 @@ namespace BatchRenameMaterial
                 foreach (var processor in processors)
                 {
                     file.NewName = processor.Process(file.NewName);
+                    if (processor is StringUppercaserAll)
+                        file.Fcase = File.FileCase.AllUpper;
+                    if (processor is StringLowercaserAll)
+                        file.Fcase = File.FileCase.AllLower;
                 }
 
                 if (!fullNameList.Contains(file.getNewFullName()))
@@ -204,6 +192,7 @@ namespace BatchRenameMaterial
                 {
                     if (System.IO.File.Exists(i.getNewFullName()))
                     {
+
                         if (resolveType == DuplicateResolveType.KeepOldName)
                         {
                             i.NewName = i.Name;
@@ -217,6 +206,10 @@ namespace BatchRenameMaterial
                     try
                     {
                         System.IO.File.Move(i.Path + "\\" + i.Name + i.Extension, i.getNewFullName());
+                        if (i.Fcase == File.FileCase.AllUpper)
+                            System.IO.File.Move(i.getNewFullName(), i.getNewFullName().ToUpperInvariant());
+                        if (i.Fcase == File.FileCase.AllLower)
+                            System.IO.File.Move(i.getNewFullName(), i.getNewFullName().ToLowerInvariant());
                     }
                     catch (Exception ex)
                     {
@@ -224,6 +217,10 @@ namespace BatchRenameMaterial
                         i.NewName = i.Name;
                     }
                     i.Name = i.NewName;
+                    if (i.Fcase == File.FileCase.AllUpper)
+                        i.Name = i.Name.ToUpperInvariant();
+                    if (i.Fcase == File.FileCase.AllLower)
+                        i.Name = i.Name.ToLowerInvariant();
                 }
                 // folder
                 else
@@ -242,7 +239,21 @@ namespace BatchRenameMaterial
                     }
                     try
                     {
-                        Directory.Move(i.Path + "\\" + i.Name, i.getNewFullName());
+                        if (i.Fcase == File.FileCase.None)
+                        {
+                            Directory.Move(i.Path + "\\" + i.Name, i.Path + "\\" + "tempName_forFolderToBeCasing");
+                            Directory.Move(i.Path + "\\" + "tempName_forFolderToBeCasing", i.getNewFullName());
+                        }
+                        if (i.Fcase == File.FileCase.AllUpper)
+                        {
+                            Directory.Move(i.Path + "\\" + i.Name, i.Path + "\\" + "tempName_forFolderToBeCasing");
+                            Directory.Move(i.Path + "\\" + "tempName_forFolderToBeCasing", i.getNewFullName().ToUpperInvariant());
+                        }  
+                        if (i.Fcase == File.FileCase.AllLower)
+                        {
+                            Directory.Move(i.Path + "\\" + i.Name, i.Path + "\\" + "tempName_forFolderToBeCasing");
+                            Directory.Move(i.Path + "\\" + "tempName_forFolderToBeCasing", i.getNewFullName().ToLowerInvariant());
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -250,6 +261,10 @@ namespace BatchRenameMaterial
                         i.NewName = i.Name;
                     }
                     i.Name = i.NewName;
+                    if (i.Fcase == File.FileCase.AllUpper)
+                        i.Name = i.Name.ToUpperInvariant();
+                    if (i.Fcase == File.FileCase.AllLower)
+                        i.Name = i.Name.ToLowerInvariant();
                 }
             });
 
@@ -405,6 +420,7 @@ namespace BatchRenameMaterial
                     continue;
                 }
             }
+            UpdateNewName();
         }
 
         private void RuleDownButton_Click(object sender, RoutedEventArgs e)
@@ -427,6 +443,7 @@ namespace BatchRenameMaterial
                     continue;
                 }
             }
+            UpdateNewName();
         }
 
         private void RuleUpMostButton_Click(object sender, RoutedEventArgs e)
@@ -441,6 +458,7 @@ namespace BatchRenameMaterial
                 processors.Remove(item as IStringProcessor);
                 processors.Insert(0, item as IStringProcessor);
             }
+            UpdateNewName();
         }
 
         private void RuleDownMostButton_Click(object sender, RoutedEventArgs e)
@@ -455,6 +473,7 @@ namespace BatchRenameMaterial
                 processors.Remove(item as IStringProcessor);
                 processors.Add(item as IStringProcessor);
             }
+            UpdateNewName();
         }
 
         private void AddFilesButton_Click(object sender, RoutedEventArgs e)
@@ -598,6 +617,7 @@ namespace BatchRenameMaterial
                     continue;
                 }
             }
+            UpdateNewName();
         }
 
         private void FileDownButton_Click(object sender, RoutedEventArgs e)
@@ -619,6 +639,7 @@ namespace BatchRenameMaterial
                     continue;
                 }
             }
+            UpdateNewName();
         }
 
         private void FileUpMostButton_Click(object sender, RoutedEventArgs e)
@@ -633,6 +654,7 @@ namespace BatchRenameMaterial
                 files.Remove(item as File);
                 files.Insert(0, item as File);
             }
+            UpdateNewName();
         }
 
         private void FileDownMostButton_Click(object sender, RoutedEventArgs e)
@@ -647,6 +669,7 @@ namespace BatchRenameMaterial
                 files.Remove(item as File);
                 files.Add(item as File);
             }
+            UpdateNewName();
         }
 
         public static void AddCard(ProcessorType processorType, object arg)
@@ -723,6 +746,12 @@ namespace BatchRenameMaterial
                     {
                         Arg = arg as StringAdderArg,
                     };
+                    break;
+                case ProcessorType.StringLowercaserAll:
+                    processor = new StringLowercaserAll();
+                    break;
+                case ProcessorType.StringUppercaserAll:
+                    processor = new StringUppercaserAll();
                     break;
                 default:
                     break;

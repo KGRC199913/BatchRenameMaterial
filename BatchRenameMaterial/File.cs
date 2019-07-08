@@ -9,13 +9,20 @@ namespace BatchRenameMaterial
 {
     class File : INotifyPropertyChanged
     {
+        public enum FileCase
+        {
+            None,
+            AllUpper,
+            AllLower
+        }
         private string name;
         private string extension;
         private string newName;
         private string path;
         private string error;
-        private Boolean isFile;
+        private bool isFile;
         private int duplicateCount;
+        private FileCase fcase;
 
         public string Name
         {
@@ -74,6 +81,7 @@ namespace BatchRenameMaterial
         }
 
         public int DuplicateCount { get => duplicateCount; set => duplicateCount = value; }
+        internal FileCase Fcase { get => fcase; set => fcase = value; }
 
         public override bool Equals(object obj)
         {

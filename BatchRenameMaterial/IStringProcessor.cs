@@ -37,7 +37,9 @@ namespace BatchRenameMaterial
         StringRegexLowercaser,
         StringRegexUppercaser,
         StringRepositioner,
-        StringAdder
+        StringAdder,
+        StringUppercaserAll,
+        StringLowercaserAll
     }
 
     static class ProcessorTypeDetector
@@ -66,6 +68,10 @@ namespace BatchRenameMaterial
                 return ProcessorType.StringRepositioner;
             if (processor is StringAdder)
                 return ProcessorType.StringAdder;
+            if (processor is StringUppercaserAll)
+                return ProcessorType.StringUppercaserAll;
+            if (processor is StringLowercaserAll)
+                return ProcessorType.StringLowercaserAll;
             return ProcessorType.Null;
         }
     }

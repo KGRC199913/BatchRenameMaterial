@@ -366,8 +366,7 @@
                               ItemTemplate="{StaticResource ProcessorChooseButton}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Vertical"
-                                       Height="{Binding Path=ActualHeight, ElementName=Border_BlurWhenPopupBoxEnter}"/>
+                            <WrapPanel Orientation="Vertical"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

@@ -20,6 +20,7 @@ namespace BatchRenameMaterial
         public string Description
             => $"Replace needles match the pattern \"\\{replaceRule.ReplacePattern}\" with \"{replaceRule.ReplaceTarget}\"";
 
+        public bool ApplyToExtension { get; set; }
         /// <summary>
         ///     Replace tokens match with regex.
         /// </summary>

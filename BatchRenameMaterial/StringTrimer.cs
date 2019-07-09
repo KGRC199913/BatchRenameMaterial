@@ -16,6 +16,8 @@ namespace BatchRenameMaterial
         public string Description
             => $"Remove all leading + trailing white space";
 
+        public bool ApplyToExtension { get; set; }
+
         /// <summary>
         ///      Trim string (remove all leading + trailing white space)
         /// </summary>

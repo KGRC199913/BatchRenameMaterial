@@ -16,6 +16,8 @@ namespace BatchRenameMaterial
 
         internal StringRepositionArg Arg { get => repositionRule; set => repositionRule = value; }
 
+        public bool ApplyToExtension { get; set; }
+
         public string Process(string haystack)
         {
         

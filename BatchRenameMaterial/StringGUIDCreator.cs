@@ -14,7 +14,10 @@ namespace BatchRenameMaterial
     {
         public string Description
             => $"Create unique GUID for name";
-         /// <summary>
+
+        public bool ApplyToExtension { get; set; }
+
+        /// <summary>
         ///      Create GUID for a string inputed..
         /// </summary>
         /// <param name="haystack">

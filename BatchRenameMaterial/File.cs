@@ -17,6 +17,7 @@ namespace BatchRenameMaterial
         }
         private string name;
         private string extension;
+        private string newExtension;
         private string newName;
         private string path;
         private string error;
@@ -82,6 +83,13 @@ namespace BatchRenameMaterial
 
         public int DuplicateCount { get => duplicateCount; set => duplicateCount = value; }
         internal FileCase Fcase { get => fcase; set => fcase = value; }
+        public string NewExtension {
+            get => newExtension;
+            set {
+                newExtension = value;
+                OnPropertyChanged("NewExtension");
+            }
+        }
 
         public override bool Equals(object obj)
         {
@@ -98,8 +106,8 @@ namespace BatchRenameMaterial
         public string getNewFullName()
         {
             if (duplicateCount != 0)
-                return path + "\\" + newName + " (" + duplicateCount.ToString() + ")" + extension;
-            return path + "\\" + newName + extension;
+                return path + "\\" + newName + " (" + duplicateCount.ToString() + ")" + newExtension;
+            return path + "\\" + newName + newExtension;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

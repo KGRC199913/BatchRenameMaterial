@@ -20,6 +20,8 @@ namespace BatchRenameMaterial
         public string Description
             => $"Lowercase from {lowercaseRule.StartIndex} to {lowercaseRule.EndIndex}";
 
+        public bool ApplyToExtension { get; set; }
+
 
         /// <summary>
         ///      Lowercasing from x to y in a string.

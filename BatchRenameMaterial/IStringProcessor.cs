@@ -22,6 +22,7 @@ namespace BatchRenameMaterial
         /// </returns>
         string Process(string haystack);
         string Description { get; }
+        bool ApplyToExtension { get; set; }
     }
 
     public enum ProcessorType

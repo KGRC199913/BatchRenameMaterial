@@ -18,7 +18,8 @@ namespace BatchRenameMaterial
 
         public string Description
             => $"Remove {removeRule.CharNumToDel} characters starting from {removeRule.StartIndex}";
-        
+
+        public bool ApplyToExtension { get; set; }
 
         /// <summary>
         ///      Remove a number of characters in a string.

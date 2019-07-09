@@ -17,6 +17,7 @@ namespace BatchRenameMaterial
 
         public StringCaseArg Arg { get => uppercaseRule; set => uppercaseRule = value; }
 
+        public bool ApplyToExtension { get; set; }
 
         public string Description
             => $"Uppercase from {uppercaseRule.StartIndex} to {uppercaseRule.EndIndex}";

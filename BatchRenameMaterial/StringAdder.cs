@@ -14,6 +14,7 @@ namespace BatchRenameMaterial
             => $"Add token \"{addrule.Token }\" to position \"{addrule.Position}\"";
 
         public StringAdderArg Arg { get => addrule; set => addrule = value; }
+        public bool ApplyToExtension { get; set; }
 
         public string Process(string haystack)
         {

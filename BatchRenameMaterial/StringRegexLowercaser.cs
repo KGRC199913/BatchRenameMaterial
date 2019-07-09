@@ -19,6 +19,8 @@ namespace BatchRenameMaterial
         public string Description
             => $"Lowercase needles match the pattern \"\\{lowerCaseRule}\"";
 
+        public bool ApplyToExtension { get; set; }
+
         /// <summary>
         ///     Lowercase tokens match with regex.
         /// </summary>

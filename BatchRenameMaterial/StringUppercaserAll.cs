@@ -11,6 +11,8 @@ namespace BatchRenameMaterial
     {
         public string Description => "Uppercase the file/folder's name";
 
+        public bool ApplyToExtension { get; set; }
+
         public string Process(string haystack)
         {
             return haystack.ToUpper();

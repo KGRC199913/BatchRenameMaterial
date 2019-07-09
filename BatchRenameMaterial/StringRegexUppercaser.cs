@@ -19,6 +19,7 @@ namespace BatchRenameMaterial
         public string Description
             => $"Uppercase needles match the pattern \"\\{upperCaseRule.RegexPattern}\"";
 
+        public bool ApplyToExtension { get; set; }
         /// <summary>
         ///     Uppercase tokens match with regex.
         /// </summary>

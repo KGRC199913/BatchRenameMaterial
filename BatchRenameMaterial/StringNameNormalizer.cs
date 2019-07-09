@@ -16,7 +16,9 @@ namespace BatchRenameMaterial
     {
         public string Description 
             => $"Fullname normalize.";
-        
+
+        public bool ApplyToExtension { get; set; }
+
         ///<summary>
         ///      Normalize the name (string). Applied only to name rule that have ONLY the first character of each words capitalized.
         /// </summary>

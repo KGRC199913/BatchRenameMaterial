@@ -148,13 +148,23 @@ namespace BatchRenameMaterial
             foreach (var file in files)
             {
                 file.NewName = file.Name;
+                file.NewExtension = file.Extension;
+                file.DuplicateCount = 0;
                 foreach (var processor in processors)
                 {
-                    file.NewName = processor.Process(file.NewName);
-                    if (processor is StringUppercaserAll)
-                        file.Fcase = File.FileCase.AllUpper;
-                    if (processor is StringLowercaserAll)
-                        file.Fcase = File.FileCase.AllLower;
+                    if (processor.ApplyToExtension)
+                    {
+                        if (file.IsFile)
+                            file.NewExtension = processor.Process(file.Extension);
+                    }
+                    else
+                    {
+                        file.NewName = processor.Process(file.NewName);
+                        if (processor is StringUppercaserAll)
+                            file.Fcase = File.FileCase.AllUpper;
+                        if (processor is StringLowercaserAll)
+                            file.Fcase = File.FileCase.AllLower;
+                    }     
                 }
 
                 if (!fullNameList.Contains(file.getNewFullName()))
@@ -167,6 +177,7 @@ namespace BatchRenameMaterial
                     if (resolveType == DuplicateResolveType.KeepOldName)
                     {
                         file.NewName = file.Name;
+                        file.NewExtension = file.Extension;
                     }
                     else
                     {
@@ -196,6 +207,7 @@ namespace BatchRenameMaterial
                         if (resolveType == DuplicateResolveType.KeepOldName)
                         {
                             i.NewName = i.Name;
+                            i.NewExtension = i.Extension;
                         }
                         else
                         {
@@ -215,8 +227,10 @@ namespace BatchRenameMaterial
                     {
                         i.Error = ex.Message;
                         i.NewName = i.Name;
+                        i.NewExtension = i.Extension;
                     }
                     i.Name = i.NewName;
+                    i.Extension = i.NewExtension;
                     if (i.Fcase == File.FileCase.AllUpper)
                         i.Name = i.Name.ToUpperInvariant();
                     if (i.Fcase == File.FileCase.AllLower)
@@ -819,6 +833,11 @@ namespace BatchRenameMaterial
                     continue;
                 }
             }
+        }
+
+        private void ApplyToExtesionCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateNewName();
         }
     }
 }

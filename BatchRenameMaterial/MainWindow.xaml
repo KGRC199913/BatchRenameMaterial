@@ -24,7 +24,7 @@
             <materialDesign:Card>
                 <StackPanel Orientation="Vertical">
                     <Label>
-                        <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Description}"/>
+                        <TextBlock TextWrapping="WrapWithOverflow" MaxWidth="500" Text="{Binding Description}"/>
                     </Label>
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                         <Button Name="removeThisRuleButton"

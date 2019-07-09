@@ -18,9 +18,7 @@ namespace BatchRenameMaterial
 
         public string Process(string haystack)
         {
-            var position = repositionRule.Position;
-            if (position > haystack.Length)
-                position = haystack.Length;
+        
 
             var opt = repositionRule.IgnoreCase;
             MatchCollection matches;
@@ -39,6 +37,10 @@ namespace BatchRenameMaterial
             {
                 strMatchedBuilder.Append(match.Value);
             }
+
+            var position = repositionRule.Position;
+            if (position > haystack.Length)
+                position = haystack.Length;
 
             haystack = haystack.Insert(position, strMatchedBuilder.ToString());
             haystack = Regex.Replace(haystack, @"\|+", String.Empty);
